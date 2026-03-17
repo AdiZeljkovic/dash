@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 /tmp/write_notes.py)",
+      "Bash(where python)",
+      "Bash(where py)",
+      "Bash(where python3)",
+      "Bash(py --version)",
+      "Bash(printf '%s' 'const fs = require\\(\"\"fs\"\"\\);')",
+      "Bash(printf '\\\\n')",
+      "Bash(printf 'powershell.exe -File C:\\\\\\\\tmp\\\\\\\\write_notes.ps1\\\\n')",
+      "Bash(node -e \"require\\(''fs''\\).writeFileSync\\(''/tmp/gen_notes.js'', ''''\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"require\\(''fs''\\).writeFileSync\\(''/tmp/write_notes.js'', Buffer.from\\('''', ''utf8''\\)\\)\")",
+      "Bash(node -e \"require\\(''fs''\\).writeFileSync\\(''/tmp/wn.js'', ''const fs=require\\(\"\"fs\"\"\\);\\\\nconst BT=\"\"\\\\x60\"\";\\\\nconst DS=\"\"\\\\x24\"\";\\\\nconst L=[];\\\\n''\\)\")",
+      "Bash(node /tmp/wn.js)",
+      "Bash(node -e \"require\\(''fs''\\).writeFileSync\\(''C:/Users/adize/AppData/Local/Temp/wn.js'', ''console.log\\(\"\"test\"\"\\)''\\)\")",
+      "Bash(node \"C:/Users/adize/AppData/Local/Temp/wn.js\")",
+      "Bash(node -e \"require\\(''fs''\\).writeFileSync\\(''C:/Users/adize/AppData/Local/Temp/seed.js'', ''const fs=require\\(\"\"fs\"\"\\);const d=\"\"C:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic/src/components/Notes.tsx\"\";const BT=String.fromCharCode\\(96\\);const DS=String.fromCharCode\\(36\\);const SQ=String.fromCharCode\\(39\\);''\\)\")",
+      "Bash(node \"C:/Users/adize/AppData/Local/Temp/seed.js\")",
+      "Bash(npm install react-hot-toast --legacy-peer-deps)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" status)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" log --oneline -5)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" remote -v)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" init)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" checkout -b main)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" remote add origin https://github.com/AdiZeljkovic/dash.git)",
+      "Bash(\"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic/.gitignore\":*)",
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" add .)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\adize\\OneDrive\\Documents\\Projekti\\AdiZeljkovic",
+      "\\tmp",
+      "c:\\tmp"
+    ]
+  }
+}

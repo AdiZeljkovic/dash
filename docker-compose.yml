@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dashboard
+      POSTGRES_USER: dashboard
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dashboard -d dashboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # PostgreSQL is internal only — no proxy-net needed
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://dashboard:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}@postgres:5432/dashboard
+      PORT: 4000
+      ALLOWED_ORIGINS: https://dashboard.adizeljkovic.com
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Backend is internal only — Nginx inside frontend proxies to it
+
+  frontend:
+    build: .
+    container_name: dashboard_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - default      # internal: talks to backend
+      - proxy-net    # external: Caddy reaches this container
+
+volumes:
+  postgres_data:
+
+networks:
+  # Default network is auto-created by docker compose (frontend ↔ backend ↔ postgres)
+  default:
+    name: dashboard_internal
+
+  # External network managed by your Caddy stack — must already exist
+  proxy-net:
+    external: true
