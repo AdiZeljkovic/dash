@@ -26,7 +26,9 @@
       "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" checkout -b main)",
       "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" remote add origin https://github.com/AdiZeljkovic/dash.git)",
       "Bash(\"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic/.gitignore\":*)",
-      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" add .)"
+      "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" add .)",
+      "Bash(git -C:*)",
+      "Bash(git add .)"
     ],
     "additionalDirectories": [
       "C:\\Users\\adize\\OneDrive\\Documents\\Projekti\\AdiZeljkovic",

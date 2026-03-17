@@ -58,22 +58,20 @@ export function Home() {
       .catch(() => {});
   }, []);
 
-  // Aladhan.com — no API key needed
+  // Vaktija.ba — Sarajevo (ID 77), automatski vraća današnje vakti
   useEffect(() => {
-    const today = format(new Date(), "dd-MM-yyyy");
-    fetch(`https://api.aladhan.com/v1/timingsByCity?city=Sarajevo&country=Bosnia%20and%20Herzegovina&method=2&date=${today}`)
+    fetch("https://api.vaktija.ba/vaktija/v1/77")
       .then(r => r.json())
       .then(data => {
-        const t = data.data?.timings;
-        if (!t) return;
-        const clean = (v: string) => v.split(" ")[0];
+        const v = data.vakat;
+        if (!v || v.length < 6) return;
         setPrayerTimes([
-          { name: "Zora", time: clean(t.Fajr) },
-          { name: "Izlazak", time: clean(t.Sunrise) },
-          { name: "Podne", time: clean(t.Dhuhr) },
-          { name: "Ikindija", time: clean(t.Asr) },
-          { name: "Akšam", time: clean(t.Maghrib) },
-          { name: "Jacija", time: clean(t.Isha) },
+          { name: "Zora",     time: v[0] },
+          { name: "Izlazak",  time: v[1] },
+          { name: "Podne",    time: v[2] },
+          { name: "Ikindija", time: v[3] },
+          { name: "Akšam",    time: v[4] },
+          { name: "Jacija",   time: v[5] },
         ]);
       })
       .catch(() => {});
