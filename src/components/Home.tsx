@@ -134,14 +134,14 @@ export function Home() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search the web..."
-            className="pl-12 h-14 bg-white/[0.02] border-white/[0.05] rounded-3xl text-base focus-visible:ring-emerald-500/50 shadow-inner"
+            className="pl-12 h-14 bg-white/[0.04] border-white/[0.07] rounded-3xl text-base focus-visible:ring-emerald-500/50 shadow-inner"
           />
         </form>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Weather Widget */}
-        <Card className="col-span-1 bg-gradient-to-br from-blue-900/20 to-indigo-900/10 border-blue-500/10 relative overflow-hidden group">
+        <Card className="col-span-1 bg-gradient-to-br from-blue-900/30 to-indigo-900/10 border-blue-500/10 relative overflow-hidden group">
           <div className="absolute top-[-20%] right-[-10%] p-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500 blur-xl">
             <Cloud className="w-64 h-64 text-blue-400" />
           </div>
@@ -177,7 +177,7 @@ export function Home() {
         </Card>
 
         {/* Vaktija Widget */}
-        <Card className="col-span-1 md:col-span-2 bg-white/[0.01] border-white/[0.05]">
+        <Card className="col-span-1 md:col-span-2 bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-emerald-400/80 text-sm uppercase tracking-widest font-mono">
               <Clock className="w-4 h-4" />
@@ -188,7 +188,7 @@ export function Home() {
             {prayerTimes.length > 0 ? (
               <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                 {prayerTimes.map((prayer) => (
-                  <div key={prayer.name} className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all duration-300 group">
+                  <div key={prayer.name} className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-all duration-300 group">
                     <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-3 group-hover:text-emerald-400/80 transition-colors">{prayer.name}</span>
                     <span className="text-2xl font-mono text-white/90 font-light tracking-tight">{prayer.time}</span>
                   </div>
@@ -196,7 +196,7 @@ export function Home() {
               </div>
             ) : (
               <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-                {[1,2,3,4,5,6].map(i => <div key={i} className="h-24 rounded-3xl bg-white/[0.02] animate-pulse" />)}
+                {[1,2,3,4,5,6].map(i => <div key={i} className="h-24 rounded-3xl bg-white/[0.04] animate-pulse" />)}
               </div>
             )}
           </CardContent>
@@ -205,7 +205,7 @@ export function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Quick Links */}
-        <Card className="bg-white/[0.01] border-white/[0.05]">
+        <Card className="bg-white/[0.03] border-white/[0.07]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="flex items-center gap-2 text-purple-400/80 text-sm uppercase tracking-widest font-mono">
               <LinkIcon className="w-4 h-4" /> Quick Links
@@ -217,7 +217,7 @@ export function Home() {
           <CardContent>
             {isLoadingLinks ? (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {[1,2,3,4].map(i => <div key={i} className="h-24 rounded-3xl bg-white/[0.02] animate-pulse" />)}
+                {[1,2,3,4].map(i => <div key={i} className="h-24 rounded-3xl bg-white/[0.04] animate-pulse" />)}
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -227,7 +227,7 @@ export function Home() {
                       key={link.id} layout
                       initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}
                       href={link.url} target="_blank" rel="noreferrer"
-                      className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.06] hover:border-purple-500/20 hover:shadow-[0_0_30px_rgba(168,85,247,0.1)] transition-all duration-300 group relative"
+                      className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.06] hover:border-purple-500/20 hover:shadow-[0_0_30px_rgba(168,85,247,0.1)] transition-all duration-300 group relative"
                     >
                       <button onClick={(e) => handleDeleteLink(e, link.id)} className="absolute top-2 right-2 p-1.5 rounded-full bg-red-500/10 text-red-400 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 transition-all duration-200">
                         <Trash2 className="w-3 h-3" />
@@ -245,7 +245,7 @@ export function Home() {
         </Card>
 
         {/* Bookmarks */}
-        <Card className="bg-white/[0.01] border-white/[0.05]">
+        <Card className="bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-orange-400/80 text-sm uppercase tracking-widest font-mono">
               <Bookmark className="w-4 h-4" /> Bookmarks
@@ -254,7 +254,7 @@ export function Home() {
           <CardContent>
             {isLoadingLinks ? (
               <div className="space-y-3">
-                {[1,2,3].map(i => <div key={i} className="h-14 rounded-2xl bg-white/[0.02] animate-pulse" />)}
+                {[1,2,3].map(i => <div key={i} className="h-14 rounded-2xl bg-white/[0.04] animate-pulse" />)}
               </div>
             ) : (
               <div className="space-y-3">
@@ -263,7 +263,7 @@ export function Home() {
                 ) : (
                   bookmarks.map((bm) => (
                     <a key={bm.id} href={bm.url} target="_blank" rel="noreferrer"
-                      className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.06] hover:border-orange-500/20 transition-all duration-300 group"
+                      className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.06] hover:border-orange-500/20 transition-all duration-300 group"
                     >
                       <span className="font-medium text-slate-400 group-hover:text-white transition-colors">{bm.title}</span>
                       <span className="text-xs px-3 py-1 rounded-full bg-white/[0.04] text-slate-500 font-mono tracking-wider uppercase group-hover:bg-orange-500/10 group-hover:text-orange-400 transition-colors">{bm.category}</span>
@@ -280,21 +280,21 @@ export function Home() {
       <AnimatePresence>
         {isAddLinkModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2"><LinkIcon className="w-5 h-5 text-purple-400" /> Add Quick Link</h3>
                 <button onClick={() => setIsAddLinkModalOpen(false)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={handleAddLink} className="p-6 space-y-5">
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Website Name</label>
-                  <Input required value={newLinkName} onChange={(e) => setNewLinkName(e.target.value)} className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g. Netflix" />
+                  <Input required value={newLinkName} onChange={(e) => setNewLinkName(e.target.value)} className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g. Netflix" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">URL</label>
-                  <Input required value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} className="bg-white/[0.02] border-white/[0.05]" placeholder="netflix.com" />
+                  <Input required value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} className="bg-white/[0.04] border-white/[0.07]" placeholder="netflix.com" />
                 </div>
-                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/[0.05]">
+                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/[0.07]">
                   <Button type="button" variant="outline" onClick={() => setIsAddLinkModalOpen(false)} className="border-white/[0.1] text-slate-300 hover:bg-white/[0.05]">Cancel</Button>
                   <Button type="submit" className="bg-purple-500 text-white hover:bg-purple-600">Add Link</Button>
                 </div>

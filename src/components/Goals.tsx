@@ -104,7 +104,7 @@ export function Goals() {
             placeholder="Search goals..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-64 bg-white/[0.02] border-white/[0.05]"
+            className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]"
           />
           <Button onClick={openAddModal} className="bg-emerald-500 text-black hover:bg-emerald-400">
             <Plus className="w-5 h-5 mr-2" /> New Goal
@@ -120,7 +120,7 @@ export function Goals() {
             className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
               filter === f 
                 ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
-                : "bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]"
+                : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
             }`}
           >
             {f}
@@ -141,7 +141,7 @@ export function Goals() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full bg-white/[0.01] border-white/[0.05] hover:border-white/[0.1] hover:bg-white/[0.02] transition-all duration-300 group flex flex-col relative overflow-hidden">
+                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all duration-300 group flex flex-col relative overflow-hidden">
                   <div className={`absolute top-0 left-0 w-1 h-full ${theme.bg} opacity-50 group-hover:opacity-100 transition-opacity`} />
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
@@ -182,7 +182,7 @@ export function Goals() {
                         />
                       </div>
                       
-                      <div className="pt-5 border-t border-white/[0.05] flex items-center justify-between">
+                      <div className="pt-5 border-t border-white/[0.07] flex items-center justify-between">
                         <span className={`text-[10px] px-3 py-1.5 rounded-full border uppercase tracking-widest font-mono ${
                           goal.status === "completed" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" :
                           goal.status === "at-risk" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" :
@@ -217,9 +217,9 @@ export function Goals() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-lg bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
+              className="w-full max-w-lg bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
             >
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   <Target className="w-5 h-5 text-emerald-400" /> 
                   {selectedGoal ? "Update Goal" : "New Goal"}
@@ -233,7 +233,7 @@ export function Goals() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Title</label>
                   <Input 
                     required value={title} onChange={(e) => setTitle(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="Goal title..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="Goal title..."
                   />
                 </div>
                 
@@ -241,7 +241,7 @@ export function Goals() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Description</label>
                   <textarea 
                     value={description} onChange={(e) => setDescription(e.target.value)}
-                    className="w-full bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[80px]"
+                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-3 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[80px]"
                     placeholder="Brief description..."
                   />
                 </div>
@@ -251,18 +251,18 @@ export function Goals() {
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Target Date</label>
                     <Input 
                       type="date" required value={targetDate} onChange={(e) => setTargetDate(e.target.value)}
-                      className="bg-white/[0.02] border-white/[0.05] font-mono text-sm"
+                      className="bg-white/[0.04] border-white/[0.07] font-mono text-sm"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Status</label>
                     <select 
                       value={status} onChange={(e) => setStatus(e.target.value as GoalStatus)}
-                      className="w-full h-10 px-3 rounded-md bg-white/[0.02] border border-white/[0.05] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                      className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                     >
-                      <option value="on-track" className="bg-[#0a0a0a]">On Track</option>
-                      <option value="at-risk" className="bg-[#0a0a0a]">At Risk</option>
-                      <option value="completed" className="bg-[#0a0a0a]">Completed</option>
+                      <option value="on-track" className="bg-[#0d1124]">On Track</option>
+                      <option value="at-risk" className="bg-[#0d1124]">At Risk</option>
+                      <option value="completed" className="bg-[#0d1124]">Completed</option>
                     </select>
                   </div>
                 </div>
@@ -287,13 +287,13 @@ export function Goals() {
                         key={c}
                         type="button"
                         onClick={() => setColor(c)}
-                        className={`w-8 h-8 rounded-full ${COLOR_MAP[c].bg} ${color === c ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0a0a0a]' : 'opacity-50 hover:opacity-100'}`}
+                        className={`w-8 h-8 rounded-full ${COLOR_MAP[c].bg} ${color === c ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0d1124]' : 'opacity-50 hover:opacity-100'}`}
                       />
                     ))}
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/[0.05]">
+                <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/[0.07]">
                   {selectedGoal ? (
                     <Button 
                       type="button"

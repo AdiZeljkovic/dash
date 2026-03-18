@@ -68,7 +68,7 @@ export default function App() {
   // ── Loading splash ─────────────────────────────────────────────────────────
   if (authState === "loading") {
     return (
-      <div className="min-h-screen bg-[#020202] flex items-center justify-center">
+      <div className="min-h-screen bg-[#080c18] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -90,14 +90,14 @@ export default function App() {
           position="bottom-right"
           toastOptions={{
             style: {
-              background: "#111111",
+              background: "#0d1124",
               color: "#e2e8f0",
               border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "16px",
               fontFamily: "inherit",
               fontSize: "14px",
             },
-            error: { iconTheme: { primary: "#ef4444", secondary: "#111111" } },
+            error: { iconTheme: { primary: "#ef4444", secondary: "#0d1124" } },
           }}
         />
       </>
@@ -106,7 +106,7 @@ export default function App() {
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#020202] text-slate-300 font-sans selection:bg-emerald-500/30">
+    <div className="flex h-screen w-full overflow-hidden bg-[#080c18] text-slate-300 font-sans selection:bg-emerald-500/30">
       {/* Mobile backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -126,10 +126,10 @@ export default function App() {
 
       <main className="flex-1 h-full overflow-y-auto relative z-10 flex flex-col">
         {/* Mobile top bar */}
-        <div className="md:hidden sticky top-0 z-20 px-4 py-3 border-b border-white/[0.05] bg-[#020202]/90 backdrop-blur-sm flex items-center gap-3 shrink-0">
+        <div className="md:hidden sticky top-0 z-20 px-4 py-3 border-b border-white/[0.07] bg-[#080c18]/90 backdrop-blur-sm flex items-center gap-3 shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.05] text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.07] text-slate-400 hover:text-white transition-colors"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -158,15 +158,15 @@ export default function App() {
         position="bottom-right"
         toastOptions={{
           style: {
-            background: "#111111",
+            background: "#0d1124",
             color: "#e2e8f0",
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: "16px",
             fontFamily: "inherit",
             fontSize: "14px",
           },
-          success: { iconTheme: { primary: "#10b981", secondary: "#111111" } },
-          error:   { iconTheme: { primary: "#ef4444", secondary: "#111111" } },
+          success: { iconTheme: { primary: "#10b981", secondary: "#0d1124" } },
+          error:   { iconTheme: { primary: "#ef4444", secondary: "#0d1124" } },
         }}
       />
     </div>

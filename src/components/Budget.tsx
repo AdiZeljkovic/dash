@@ -95,7 +95,7 @@ export function Budget() {
 
   const Skeleton = () => (
     <div className="space-y-3">
-      {[1,2,3,4,5].map(i => <div key={i} className="h-16 rounded-2xl bg-white/[0.02] animate-pulse" />)}
+      {[1,2,3,4,5].map(i => <div key={i} className="h-16 rounded-2xl bg-white/[0.04] animate-pulse" />)}
     </div>
   );
 
@@ -123,7 +123,7 @@ export function Budget() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-gradient-to-br from-indigo-900/20 to-indigo-900/5 border-indigo-500/20 relative overflow-hidden">
+        <Card className="bg-gradient-to-br from-indigo-900/30 to-indigo-900/10 border-indigo-500/20 relative overflow-hidden">
           <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-indigo-500/10 blur-[60px] rounded-full" />
           <CardHeader className="pb-2">
             <CardTitle className="text-indigo-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><Wallet className="w-4 h-4" /> Total Balance</CardTitle>
@@ -133,7 +133,7 @@ export function Budget() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-900/5 border-emerald-500/20 relative overflow-hidden">
+        <Card className="bg-gradient-to-br from-emerald-900/30 to-emerald-900/10 border-emerald-500/20 relative overflow-hidden">
           <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-emerald-500/10 blur-[60px] rounded-full" />
           <CardHeader className="pb-2">
             <CardTitle className="text-emerald-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingUp className="w-4 h-4" /> Total Income</CardTitle>
@@ -143,7 +143,7 @@ export function Budget() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-red-900/20 to-red-900/5 border-red-500/20 relative overflow-hidden">
+        <Card className="bg-gradient-to-br from-red-900/30 to-red-900/10 border-red-500/20 relative overflow-hidden">
           <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-red-500/10 blur-[60px] rounded-full" />
           <CardHeader className="pb-2">
             <CardTitle className="text-red-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingDown className="w-4 h-4" /> Total Expenses</CardTitle>
@@ -155,7 +155,7 @@ export function Budget() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-white/[0.01] border-white/[0.05]">
+        <Card className="lg:col-span-2 bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-widest font-mono text-slate-400">
               <PieChart className="w-4 h-4 text-purple-400" />
@@ -194,7 +194,7 @@ export function Budget() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/[0.01] border-white/[0.05]">
+        <Card className="bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-widest font-mono text-slate-400">
               <DollarSign className="w-4 h-4 text-emerald-400" /> Recent Transactions
@@ -206,7 +206,7 @@ export function Budget() {
                 <div className="text-center py-10 text-slate-500 font-light">No transactions yet.</div>
               ) : (
                 transactions.map((t) => (
-                  <div key={t.id} className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-colors group">
+                  <div key={t.id} className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors group">
                     <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${t.type === "income" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>
                         {t.type === "income" ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
@@ -239,8 +239,8 @@ export function Budget() {
       <AnimatePresence>
         {isTransactionModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   {txType === "income" ? <TrendingUp className="w-5 h-5 text-emerald-400" /> : <TrendingDown className="w-5 h-5 text-red-400" />}
                   Add {txType === "income" ? "Income" : "Expense"}
@@ -252,23 +252,23 @@ export function Budget() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Amount</label>
                   <div className="relative">
                     <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                    <Input type="number" step="0.01" min="0" required value={txAmount} onChange={(e) => setTxAmount(e.target.value)} className="pl-12 text-2xl h-14 bg-white/[0.02] border-white/[0.05] font-mono" placeholder="0.00" />
+                    <Input type="number" step="0.01" min="0" required value={txAmount} onChange={(e) => setTxAmount(e.target.value)} className="pl-12 text-2xl h-14 bg-white/[0.04] border-white/[0.07] font-mono" placeholder="0.00" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Description</label>
-                  <Input required value={txName} onChange={(e) => setTxName(e.target.value)} className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g., Groceries, Salary..." />
+                  <Input required value={txName} onChange={(e) => setTxName(e.target.value)} className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g., Groceries, Salary..." />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Date</label>
-                    <Input type="date" required value={txDate} onChange={(e) => setTxDate(e.target.value)} className="bg-white/[0.02] border-white/[0.05] font-mono text-sm" />
+                    <Input type="date" required value={txDate} onChange={(e) => setTxDate(e.target.value)} className="bg-white/[0.04] border-white/[0.07] font-mono text-sm" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
-                    <select required value={txCategory} onChange={(e) => setTxCategory(e.target.value)} className="w-full h-10 px-3 rounded-md bg-white/[0.02] border border-white/[0.05] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none">
+                    <select required value={txCategory} onChange={(e) => setTxCategory(e.target.value)} className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none">
                       <option value="" disabled>Select...</option>
-                      {categories[txType].map(cat => <option key={cat} value={cat} className="bg-[#0a0a0a]">{cat}</option>)}
+                      {categories[txType].map(cat => <option key={cat} value={cat} className="bg-[#0d1124]">{cat}</option>)}
                     </select>
                   </div>
                 </div>
@@ -283,26 +283,26 @@ export function Budget() {
         {/* Category Modal */}
         {isCategoryModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2"><Tag className="w-5 h-5 text-blue-400" /> Manage Categories</h3>
                 <button onClick={() => setIsCategoryModalOpen(false)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
               </div>
               <div className="p-6 space-y-6">
-                <div className="flex bg-white/[0.02] p-1 rounded-xl border border-white/[0.05]">
+                <div className="flex bg-white/[0.04] p-1 rounded-xl border border-white/[0.07]">
                   <button onClick={() => setCatType("income")} className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${catType === "income" ? "bg-white/10 text-white" : "text-slate-400 hover:text-white"}`}>Income</button>
                   <button onClick={() => setCatType("expense")} className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${catType === "expense" ? "bg-white/10 text-white" : "text-slate-400 hover:text-white"}`}>Expense</button>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Current Categories</label>
-                  <div className="flex flex-wrap gap-2 max-h-[150px] overflow-y-auto p-2 bg-white/[0.01] rounded-xl border border-white/[0.05]">
+                  <div className="flex flex-wrap gap-2 max-h-[150px] overflow-y-auto p-2 bg-white/[0.03] rounded-xl border border-white/[0.07]">
                     {categories[catType].map(cat => <span key={cat} className="px-3 py-1 bg-white/[0.05] border border-white/[0.1] rounded-full text-xs text-slate-300">{cat}</span>)}
                   </div>
                 </div>
-                <form onSubmit={handleAddCategory} className="space-y-2 pt-4 border-t border-white/[0.05]">
+                <form onSubmit={handleAddCategory} className="space-y-2 pt-4 border-t border-white/[0.07]">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Add New Category</label>
                   <div className="flex gap-2">
-                    <Input required value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} className="bg-white/[0.02] border-white/[0.05]" placeholder="Category name..." />
+                    <Input required value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} className="bg-white/[0.04] border-white/[0.07]" placeholder="Category name..." />
                     <Button type="submit" className="bg-blue-500 hover:bg-blue-400 text-white px-4">Add</Button>
                   </div>
                 </form>

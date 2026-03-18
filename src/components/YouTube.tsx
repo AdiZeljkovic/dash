@@ -119,7 +119,7 @@ export function YouTube() {
             placeholder="Search videos..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64 bg-white/[0.02] border-white/[0.05]" 
+            className="w-64 bg-white/[0.04] border-white/[0.07]" 
           />
           <Button onClick={() => setIsChannelModalOpen(true)} className="bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20">
             <Settings className="w-4 h-4 mr-2" /> Manage Channels
@@ -148,7 +148,7 @@ export function YouTube() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full bg-white/[0.01] border-white/[0.05] hover:border-red-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
+                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-red-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
                   <div className="relative aspect-video w-full overflow-hidden rounded-t-2xl">
                     <img 
                       src={video.thumbnail} 
@@ -193,7 +193,7 @@ export function YouTube() {
                       </div>
                     </div>
                     
-                    <div className="mt-auto pt-4 border-t border-white/[0.05]">
+                    <div className="mt-auto pt-4 border-t border-white/[0.07]">
                       <a href={video.url} target="_blank" rel="noopener noreferrer" className="w-full">
                         <Button variant="ghost" size="sm" className="w-full text-slate-400 hover:text-white group-hover:bg-white/[0.05]">
                           Watch on YouTube <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -213,7 +213,7 @@ export function YouTube() {
           <Button 
             onClick={handleLoadMore} 
             disabled={isLoadingMore || channels.length === 0}
-            className="bg-white/[0.02] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
+            className="bg-white/[0.04] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
           >
             {isLoadingMore ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Loading...</>
@@ -233,9 +233,9 @@ export function YouTube() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+              className="w-full max-w-2xl bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
             >
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between shrink-0">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between shrink-0">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   <Youtube className="w-5 h-5 text-red-500" /> Manage Channels
                 </h3>
@@ -244,21 +244,21 @@ export function YouTube() {
               
               <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
                 {/* Add Channel Form */}
-                <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-white/[0.05] bg-white/[0.01] overflow-y-auto">
+                <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-white/[0.07] bg-white/[0.03] overflow-y-auto">
                   <h4 className="text-sm font-mono uppercase tracking-widest text-slate-400 mb-6">Add New Channel</h4>
                   <form onSubmit={handleAddChannel} className="space-y-4">
                     <div className="space-y-2">
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Channel Name</label>
                       <Input 
                         required value={newChannelName} onChange={(e) => setNewChannelName(e.target.value)}
-                        className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g. MKBHD"
+                        className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g. MKBHD"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Channel URL</label>
                       <Input 
                         required value={newChannelUrl} onChange={(e) => setNewChannelUrl(e.target.value)}
-                        className="bg-white/[0.02] border-white/[0.05]" placeholder="https://youtube.com/..."
+                        className="bg-white/[0.04] border-white/[0.07]" placeholder="https://youtube.com/..."
                       />
                     </div>
                     <Button type="submit" className="w-full mt-2 bg-red-500 hover:bg-red-600 text-white">
@@ -268,14 +268,14 @@ export function YouTube() {
                 </div>
 
                 {/* Active Channels List */}
-                <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-[#0a0a0a]">
+                <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-[#0d1124]">
                   <h4 className="text-sm font-mono uppercase tracking-widest text-slate-400 mb-6">Active Channels ({channels.length})</h4>
                   <div className="space-y-3">
                     {channels.length === 0 ? (
                       <p className="text-slate-500 text-sm font-light text-center py-10">No channels added yet.</p>
                     ) : (
                       channels.map(channel => (
-                        <div key={channel.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] group hover:bg-white/[0.04] transition-colors">
+                        <div key={channel.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.04] border border-white/[0.07] group hover:bg-white/[0.04] transition-colors">
                           <div className="min-w-0 flex-1 pr-4 flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-white/[0.05] overflow-hidden shrink-0 border border-white/[0.1]">
                               <img 

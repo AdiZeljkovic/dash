@@ -41,7 +41,7 @@ export function Login({ onSuccess }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#020202] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#080c18] flex items-center justify-center p-4">
       {/* Subtle background grid */}
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.03]"
@@ -71,7 +71,7 @@ export function Login({ onSuccess }: LoginProps) {
         </div>
 
         {/* Card */}
-        <div className="bg-white/[0.02] border border-white/[0.06] rounded-3xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)]">
+        <div className="bg-white/[0.04] border border-white/[0.06] rounded-3xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)]">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label className="text-xs font-mono uppercase tracking-widest text-slate-500">

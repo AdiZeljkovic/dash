@@ -86,16 +86,16 @@ export function Notes() {
             <Button onClick={handleSaveNote} className="bg-emerald-500 text-black hover:bg-emerald-400"><Save className="w-4 h-4 mr-2" /> Save Note</Button>
           </div>
         </header>
-        <Card className="bg-white/[0.01] border-white/[0.05] overflow-hidden">
+        <Card className="bg-white/[0.03] border-white/[0.07] overflow-hidden">
           <CardContent className="p-8 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 space-y-2">
                 <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Title</label>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Note title..." className="text-xl bg-white/[0.02] border-white/[0.05] h-14" autoFocus />
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Note title..." className="text-xl bg-white/[0.04] border-white/[0.07] h-14" autoFocus />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
-                <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g., Work, Personal" className="bg-white/[0.02] border-white/[0.05] h-14" />
+                <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g., Work, Personal" className="bg-white/[0.04] border-white/[0.07] h-14" />
               </div>
             </div>
             <div className="space-y-2">
@@ -103,19 +103,19 @@ export function Notes() {
               <div className="flex gap-3">
                 <div className="relative flex-1">
                   <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                  <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" className="pl-11 bg-white/[0.02] border-white/[0.05]" />
+                  <Input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" className="pl-11 bg-white/[0.04] border-white/[0.07]" />
                 </div>
-                {imageUrl && <Button variant="outline" onClick={() => setImageUrl("")} className="border-white/[0.05] hover:bg-white/[0.05]"><X className="w-4 h-4" /></Button>}
+                {imageUrl && <Button variant="outline" onClick={() => setImageUrl("")} className="border-white/[0.07] hover:bg-white/[0.05]"><X className="w-4 h-4" /></Button>}
               </div>
               {imageUrl && (
-                <div className="mt-4 rounded-2xl overflow-hidden border border-white/[0.05] bg-black/50 relative h-48">
+                <div className="mt-4 rounded-2xl overflow-hidden border border-white/[0.07] bg-black/50 relative h-48">
                   <img src={imageUrl} alt="Note attachment" className="w-full h-full object-cover opacity-80" onError={(e) => (e.currentTarget.style.display = "none")} />
                 </div>
               )}
             </div>
             <div className="space-y-2">
               <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Content</label>
-              <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Start typing your note here..." className="w-full min-h-[200px] md:min-h-[300px] p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] text-base text-slate-300 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y font-light leading-relaxed" />
+              <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Start typing your note here..." className="w-full min-h-[200px] md:min-h-[300px] p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] text-base text-slate-300 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y font-light leading-relaxed" />
             </div>
           </CardContent>
         </Card>
@@ -133,7 +133,7 @@ export function Notes() {
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative w-full md:w-64">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <Input placeholder="Search notes..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-11 bg-white/[0.02] border-white/[0.05]" />
+            <Input placeholder="Search notes..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-11 bg-white/[0.04] border-white/[0.07]" />
           </div>
           <Button onClick={handleNewNote} className="shrink-0 bg-emerald-500 text-black hover:bg-emerald-400"><Plus className="w-5 h-5 mr-2" /> New Note</Button>
         </div>
@@ -141,16 +141,16 @@ export function Notes() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1,2,3,4,5,6].map(i => <div key={i} className="h-52 rounded-3xl bg-white/[0.02] animate-pulse" />)}
+          {[1,2,3,4,5,6].map(i => <div key={i} className="h-52 rounded-3xl bg-white/[0.04] animate-pulse" />)}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
             {filteredNotes.map((note) => (
               <motion.div key={note.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.2 }}>
-                <Card onClick={() => handleEditNote(note)} className="h-full bg-white/[0.01] border-white/[0.05] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group cursor-pointer flex flex-col overflow-hidden">
+                <Card onClick={() => handleEditNote(note)} className="h-full bg-white/[0.03] border-white/[0.07] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group cursor-pointer flex flex-col overflow-hidden">
                   {note.imageUrl && (
-                    <div className="h-32 w-full overflow-hidden border-b border-white/[0.05]">
+                    <div className="h-32 w-full overflow-hidden border-b border-white/[0.07]">
                       <img src={note.imageUrl} alt={note.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
                     </div>
                   )}
@@ -165,7 +165,7 @@ export function Notes() {
                   </CardHeader>
                   <CardContent className="flex-1 flex flex-col">
                     <p className="text-sm text-slate-400 line-clamp-4 flex-1 whitespace-pre-wrap font-light leading-relaxed">{note.content}</p>
-                    <div className="mt-6 pt-4 border-t border-white/[0.05] flex items-center justify-between text-xs text-slate-500 font-mono">
+                    <div className="mt-6 pt-4 border-t border-white/[0.07] flex items-center justify-between text-xs text-slate-500 font-mono">
                       <span className="flex items-center gap-2"><FileText className="w-4 h-4" /> {note.date}</span>
                       <span className="text-emerald-400 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"><Edit3 className="w-3.5 h-3.5" /> Edit</span>
                     </div>

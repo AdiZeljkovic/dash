@@ -107,7 +107,7 @@ export function Books() {
               placeholder="Search books..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full md:w-64 pl-9 bg-white/[0.02] border-white/[0.05]"
+              className="w-full md:w-64 pl-9 bg-white/[0.04] border-white/[0.07]"
             />
           </div>
           <Button onClick={() => setIsAddModalOpen(true)} className="bg-emerald-500 text-black hover:bg-emerald-400">
@@ -124,7 +124,7 @@ export function Books() {
             className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
               filter === f 
                 ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
-                : "bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]"
+                : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
             }`}
           >
             {f.replace("-", " ")}
@@ -145,7 +145,7 @@ export function Books() {
             >
               <Card 
                 onClick={() => openBookDetails(book)}
-                className="h-full bg-white/[0.01] border-white/[0.05] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer"
+                className="h-full bg-white/[0.03] border-white/[0.07] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer"
               >
                 <div className="relative aspect-[2/3] w-full overflow-hidden rounded-t-2xl">
                   <img 
@@ -154,7 +154,7 @@ export function Books() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080c18] via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                   
                   <div className="absolute inset-0 p-4 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="flex justify-end">
@@ -183,7 +183,7 @@ export function Books() {
                   </div>
                 </div>
                 
-                <CardContent className="p-5 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#020202] to-transparent -mt-12 pt-14">
+                <CardContent className="p-5 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#080c18] to-transparent -mt-12 pt-14">
                   <h3 className="font-medium text-lg text-white line-clamp-1 mb-1 group-hover:text-emerald-400 transition-colors" title={book.title}>{book.title}</h3>
                   <p className="text-xs text-slate-400 mb-4 font-mono uppercase tracking-wider">{book.author}</p>
                   
@@ -223,9 +223,9 @@ export function Books() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
+              className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
             >
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-emerald-400" /> Add New Book
                 </h3>
@@ -236,32 +236,32 @@ export function Books() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Title</label>
                   <Input 
                     required value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="Book title..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="Book title..."
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Author</label>
                   <Input 
                     required value={newAuthor} onChange={(e) => setNewAuthor(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="Author name..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="Author name..."
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Cover Image URL (Optional)</label>
                   <Input 
                     value={newCover} onChange={(e) => setNewCover(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="https://..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="https://..."
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Status</label>
                   <select 
                     value={newStatus} onChange={(e) => setNewStatus(e.target.value as BookStatus)}
-                    className="w-full h-10 px-3 rounded-md bg-white/[0.02] border border-white/[0.05] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                    className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                   >
-                    <option value="want-to-read" className="bg-[#0a0a0a]">Want to Read</option>
-                    <option value="reading" className="bg-[#0a0a0a]">Reading</option>
-                    <option value="read" className="bg-[#0a0a0a]">Read</option>
+                    <option value="want-to-read" className="bg-[#0d1124]">Want to Read</option>
+                    <option value="reading" className="bg-[#0d1124]">Reading</option>
+                    <option value="read" className="bg-[#0d1124]">Read</option>
                   </select>
                 </div>
                 <Button type="submit" className="w-full mt-4 bg-emerald-500 hover:bg-emerald-400 text-black">
@@ -280,10 +280,10 @@ export function Books() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+              className="w-full max-w-2xl bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
             >
               {/* Left Column: Cover & Basic Info */}
-              <div className="w-full md:w-1/3 bg-white/[0.02] border-r border-white/[0.05] p-6 flex flex-col items-center text-center">
+              <div className="w-full md:w-1/3 bg-white/[0.04] border-r border-white/[0.07] p-6 flex flex-col items-center text-center">
                 <div className="w-32 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl mb-4 border border-white/10">
                   <img src={selectedBook.cover} alt={selectedBook.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </div>
@@ -297,9 +297,9 @@ export function Books() {
                       value={editStatus} onChange={(e) => setEditStatus(e.target.value as BookStatus)}
                       className="w-full h-10 px-3 rounded-md bg-white/[0.05] border border-white/[0.1] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                     >
-                      <option value="want-to-read" className="bg-[#0a0a0a]">Want to Read</option>
-                      <option value="reading" className="bg-[#0a0a0a]">Reading</option>
-                      <option value="read" className="bg-[#0a0a0a]">Read</option>
+                      <option value="want-to-read" className="bg-[#0d1124]">Want to Read</option>
+                      <option value="reading" className="bg-[#0d1124]">Reading</option>
+                      <option value="read" className="bg-[#0d1124]">Read</option>
                     </select>
                   </div>
 
@@ -345,10 +345,10 @@ export function Books() {
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
                   placeholder="Write your thoughts, quotes, or a summary here..."
-                  className="flex-1 w-full bg-white/[0.02] border border-white/[0.05] rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[200px] mb-6"
+                  className="flex-1 w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[200px] mb-6"
                 />
 
-                <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/[0.05]">
+                <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/[0.07]">
                   <Button 
                     variant="ghost" 
                     onClick={() => handleDeleteBook(selectedBook.id)}

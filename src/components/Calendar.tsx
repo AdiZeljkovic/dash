@@ -102,7 +102,7 @@ export function Calendar() {
         <div
           key={day.toString()}
           onClick={() => handleDayClick(cloneDay)}
-          className={`p-2 sm:p-3 border-r border-b border-white/[0.05] min-h-[100px] sm:min-h-[120px] flex flex-col transition-all duration-300 hover:bg-white/[0.04] cursor-pointer group relative ${
+          className={`p-2 sm:p-3 border-r border-b border-white/[0.07] min-h-[100px] sm:min-h-[120px] flex flex-col transition-all duration-300 hover:bg-white/[0.04] cursor-pointer group relative ${
             !isSameMonth(day, monthStart) ? "text-slate-700 bg-black/40" : "text-slate-300"
           } ${isSelected ? "bg-white/[0.03]" : ""}`}
         >
@@ -162,8 +162,8 @@ export function Calendar() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar Grid */}
         <div className="lg:col-span-2">
-          <Card className="bg-white/[0.01] border-white/[0.05] overflow-hidden p-0 h-full flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between border-b border-white/[0.05] p-6 bg-white/[0.01]">
+          <Card className="bg-white/[0.03] border-white/[0.07] overflow-hidden p-0 h-full flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between border-b border-white/[0.07] p-6 bg-white/[0.03]">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                   <CalendarIcon className="w-6 h-6 text-emerald-400" />
@@ -173,23 +173,23 @@ export function Calendar() {
                 </CardTitle>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={prevMonth} className="rounded-xl border-white/[0.05] hover:bg-white/[0.05]">
+                <Button variant="outline" size="icon" onClick={prevMonth} className="rounded-xl border-white/[0.07] hover:bg-white/[0.05]">
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={nextMonth} className="rounded-xl border-white/[0.05] hover:bg-white/[0.05]">
+                <Button variant="outline" size="icon" onClick={nextMonth} className="rounded-xl border-white/[0.07] hover:bg-white/[0.05]">
                   <ChevronRight className="w-5 h-5" />
                 </Button>
               </div>
             </CardHeader>
             <CardContent className="p-0 flex-1 flex flex-col">
-              <div className="grid grid-cols-7 bg-white/[0.02] border-b border-white/[0.05]">
+              <div className="grid grid-cols-7 bg-white/[0.04] border-b border-white/[0.07]">
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                  <div key={day} className="p-3 sm:p-4 text-center text-[10px] sm:text-xs font-mono text-slate-500 uppercase tracking-widest border-r border-white/[0.05] last:border-r-0">
+                  <div key={day} className="p-3 sm:p-4 text-center text-[10px] sm:text-xs font-mono text-slate-500 uppercase tracking-widest border-r border-white/[0.07] last:border-r-0">
                     {day}
                   </div>
                 ))}
               </div>
-              <div className="flex flex-col bg-black/20 border-l border-white/[0.05] flex-1">
+              <div className="flex flex-col bg-black/20 border-l border-white/[0.07] flex-1">
                 {rows}
               </div>
             </CardContent>
@@ -198,9 +198,9 @@ export function Calendar() {
 
         {/* Side Panel */}
         <div className="lg:col-span-1">
-          <Card className="bg-white/[0.01] border-white/[0.05] h-full flex flex-col overflow-hidden relative">
+          <Card className="bg-white/[0.03] border-white/[0.07] h-full flex flex-col overflow-hidden relative">
             {/* Header for Side Panel */}
-            <div className="p-6 border-b border-white/[0.05] bg-white/[0.02] flex items-center justify-between shrink-0">
+            <div className="p-6 border-b border-white/[0.07] bg-white/[0.04] flex items-center justify-between shrink-0">
               <div>
                 <h3 className="text-xl font-medium text-white">{format(selectedDate, "EEEE")}</h3>
                 <p className="text-sm text-slate-400 font-mono tracking-wider">{format(selectedDate, "MMM do, yyyy")}</p>
@@ -219,7 +219,7 @@ export function Calendar() {
                   <motion.div key="list" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                     {selectedDayEvents.length === 0 ? (
                       <div className="text-center py-12">
-                        <div className="w-16 h-16 rounded-full bg-white/[0.02] border border-white/[0.05] flex items-center justify-center mx-auto mb-4">
+                        <div className="w-16 h-16 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center mx-auto mb-4">
                           <CalendarIcon className="w-6 h-6 text-slate-600" />
                         </div>
                         <p className="text-slate-400 font-light">No events scheduled for this day.</p>
@@ -230,7 +230,7 @@ export function Calendar() {
                         <div 
                           key={ev.id}
                           onClick={() => { setSelectedEvent(ev); setViewState("details"); }}
-                          className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-colors cursor-pointer group flex gap-4"
+                          className="p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors cursor-pointer group flex gap-4"
                         >
                           <div className={`w-2 h-full rounded-full bg-${ev.color}-500 shrink-0`} />
                           <div className="flex-1 min-w-0">
@@ -255,7 +255,7 @@ export function Calendar() {
                       </div>
                       <h2 className="text-3xl font-semibold tracking-tight text-white mb-4">{selectedEvent.title}</h2>
                       
-                      <div className="space-y-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl p-5">
+                      <div className="space-y-4 bg-white/[0.04] border border-white/[0.07] rounded-2xl p-5">
                         <div className="flex items-start gap-3">
                           <Clock className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
                           <div>
@@ -265,7 +265,7 @@ export function Calendar() {
                         </div>
                         
                         {selectedEvent.description && (
-                          <div className="flex items-start gap-3 pt-4 border-t border-white/[0.05]">
+                          <div className="flex items-start gap-3 pt-4 border-t border-white/[0.07]">
                             <AlignLeft className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
                             <div>
                               <p className="text-sm font-medium text-slate-300 mb-1">Description</p>
@@ -276,7 +276,7 @@ export function Calendar() {
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-white/[0.05]">
+                    <div className="pt-6 border-t border-white/[0.07]">
                       <Button 
                         variant="destructive" 
                         className="w-full bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20"
@@ -298,7 +298,7 @@ export function Calendar() {
                           value={newEventTitle}
                           onChange={(e) => setNewEventTitle(e.target.value)}
                           placeholder="e.g., Team Meeting" 
-                          className="bg-white/[0.02] border-white/[0.05]"
+                          className="bg-white/[0.04] border-white/[0.07]"
                           required
                         />
                       </div>
@@ -309,7 +309,7 @@ export function Calendar() {
                           value={newEventTime}
                           onChange={(e) => setNewEventTime(e.target.value)}
                           placeholder="e.g., 10:00 AM or All Day" 
-                          className="bg-white/[0.02] border-white/[0.05]"
+                          className="bg-white/[0.04] border-white/[0.07]"
                         />
                       </div>
 
@@ -319,7 +319,7 @@ export function Calendar() {
                           value={newEventDesc}
                           onChange={(e) => setNewEventDesc(e.target.value)}
                           placeholder="Add details..." 
-                          className="w-full min-h-[100px] p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
+                          className="w-full min-h-[100px] p-3 rounded-xl bg-white/[0.04] border border-white/[0.07] text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
                         />
                       </div>
 
@@ -331,13 +331,13 @@ export function Calendar() {
                               key={color}
                               type="button"
                               onClick={() => setNewEventColor(color)}
-                              className={`w-8 h-8 rounded-full bg-${color}-500 transition-transform ${newEventColor === color ? "scale-110 ring-2 ring-white ring-offset-2 ring-offset-[#020202]" : "opacity-50 hover:opacity-100"}`}
+                              className={`w-8 h-8 rounded-full bg-${color}-500 transition-transform ${newEventColor === color ? "scale-110 ring-2 ring-white ring-offset-2 ring-offset-[#080c18]" : "opacity-50 hover:opacity-100"}`}
                             />
                           ))}
                         </div>
                       </div>
 
-                      <div className="pt-6 border-t border-white/[0.05]">
+                      <div className="pt-6 border-t border-white/[0.07]">
                         <Button type="submit" className="w-full bg-emerald-500 text-black hover:bg-emerald-400">
                           Save Event
                         </Button>

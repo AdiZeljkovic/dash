@@ -36,7 +36,7 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
   return (
     <aside
       className={cn(
-        "w-[280px] h-screen flex-shrink-0 border-r border-white/[0.05] bg-[#020202] flex flex-col z-40",
+        "w-[280px] h-screen flex-shrink-0 border-r border-white/[0.07] bg-[#060910] flex flex-col z-40",
         // On mobile: fixed position, slide in/out
         "fixed md:relative transition-transform duration-300 ease-in-out",
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
@@ -64,13 +64,13 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
               onClick={() => setActiveTab(item.id)}
               className={cn(
                 "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-300 relative group overflow-hidden",
-                isActive ? "text-white" : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.02]"
+                isActive ? "text-white" : "text-slate-500 hover:text-slate-300 hover:bg-white/[0.04]"
               )}
             >
               {isActive && (
                 <motion.div
                   layoutId="active-nav"
-                  className="absolute inset-0 bg-white/[0.04] rounded-2xl border border-white/[0.05]"
+                  className="absolute inset-0 bg-white/[0.07] rounded-2xl border border-white/[0.08]"
                   initial={false}
                   transition={{ type: "spring", stiffness: 400, damping: 35 }}
                 />

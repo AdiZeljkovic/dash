@@ -109,7 +109,7 @@ export function Bookmarks() {
             placeholder="Search bookmarks..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-64 bg-white/[0.02] border-white/[0.05]"
+            className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]"
           />
           <Button onClick={openAddModal} className="bg-orange-500 text-white hover:bg-orange-600">
             <Plus className="w-5 h-5 mr-2" /> New Bookmark
@@ -125,7 +125,7 @@ export function Bookmarks() {
             className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
               filter === cat 
                 ? "bg-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.3)]" 
-                : "bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]"
+                : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
             }`}
           >
             {cat}
@@ -144,7 +144,7 @@ export function Bookmarks() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <Card className="h-full bg-white/[0.01] border-white/[0.05] hover:border-orange-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col relative">
+              <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-orange-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col relative">
                 <CardContent className="p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4">
                     <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
@@ -178,8 +178,8 @@ export function Bookmarks() {
                     {bm.url.replace(/^https?:\/\//, '')}
                   </p>
                   
-                  <div className="mt-auto pt-4 border-t border-white/[0.05] flex items-center justify-between">
-                    <span className="text-[10px] px-3 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.02] text-slate-400 uppercase tracking-widest font-mono">
+                  <div className="mt-auto pt-4 border-t border-white/[0.07] flex items-center justify-between">
+                    <span className="text-[10px] px-3 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] text-slate-400 uppercase tracking-widest font-mono">
                       {bm.category}
                     </span>
                     <a href={bm.url} target="_blank" rel="noopener noreferrer">
@@ -204,9 +204,9 @@ export function Bookmarks() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
+              className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden"
             >
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   <Bookmark className="w-5 h-5 text-orange-400" /> 
                   {editingId ? "Edit Bookmark" : "New Bookmark"}
@@ -220,7 +220,7 @@ export function Bookmarks() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Title</label>
                   <Input 
                     required value={title} onChange={(e) => setTitle(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g. React Docs"
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g. React Docs"
                   />
                 </div>
                 
@@ -228,7 +228,7 @@ export function Bookmarks() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">URL</label>
                   <Input 
                     required value={url} onChange={(e) => setUrl(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="https://..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="https://..."
                   />
                 </div>
 
@@ -236,7 +236,7 @@ export function Bookmarks() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
                   <Input 
                     required value={category} onChange={(e) => setCategory(e.target.value)}
-                    className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g. Dev, Design, News..."
+                    className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g. Dev, Design, News..."
                   />
                 </div>
 
@@ -255,7 +255,7 @@ export function Bookmarks() {
                   <span className="text-sm text-slate-300">Show on Dashboard</span>
                 </div>
 
-                <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/[0.05]">
+                <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/[0.07]">
                   {editingId ? (
                     <Button 
                       type="button"

@@ -101,7 +101,7 @@ export function Habits() {
             value={newHabit}
             onChange={(e) => setNewHabit(e.target.value)}
             placeholder="New habit..." 
-            className="w-full md:w-64 bg-white/[0.02] border-white/[0.05]" 
+            className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]" 
           />
           <Button type="submit" className="bg-emerald-500 text-black hover:bg-emerald-400">
             <Plus className="w-5 h-5 mr-2" /> Add
@@ -124,7 +124,7 @@ export function Habits() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="bg-white/[0.01] border-white/[0.05] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden relative group h-full flex flex-col">
+                <Card className="bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.03] transition-all duration-300 overflow-hidden relative group h-full flex flex-col">
                   <div className={`absolute top-0 left-0 w-1 h-full ${habit.color} opacity-50 group-hover:opacity-100 transition-opacity`} />
                   
                   <CardHeader className="pb-2 flex flex-row items-center justify-between">
@@ -150,7 +150,7 @@ export function Habits() {
                         className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
                           isCompletedToday 
                             ? `${habit.color} text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] scale-110` 
-                            : "bg-white/[0.03] border border-white/[0.05] text-slate-500 hover:bg-white/[0.08] hover:text-white"
+                            : "bg-white/[0.03] border border-white/[0.07] text-slate-500 hover:bg-white/[0.08] hover:text-white"
                         }`}
                       >
                         {isCompletedToday ? <Check className="w-7 h-7" /> : <X className="w-7 h-7" />}
@@ -158,7 +158,7 @@ export function Habits() {
                     </div>
                     
                     {/* Weekly calendar view */}
-                    <div className="mt-8 pt-6 border-t border-white/[0.05] flex justify-between gap-1">
+                    <div className="mt-8 pt-6 border-t border-white/[0.07] flex justify-between gap-1">
                       {weekDays.map((day, i) => {
                         const dateStr = format(day, 'yyyy-MM-dd');
                         const isDone = habit.completedDates.includes(dateStr);
@@ -181,7 +181,7 @@ export function Habits() {
                                     ? "border border-white/20 bg-white/[0.05] hover:bg-white/10" 
                                     : isFutureDay
                                       ? "bg-transparent opacity-30 cursor-not-allowed"
-                                      : "bg-white/[0.02] hover:bg-white/[0.05] border border-transparent"
+                                      : "bg-white/[0.04] hover:bg-white/[0.05] border border-transparent"
                               }`}
                             >
                               {isDone && <Check className="w-4 h-4" />}

@@ -90,7 +90,7 @@ export function Tasks() {
 
   const Skeleton = () => (
     <div className="space-y-3">
-      {[1,2,3,4].map(i => <div key={i} className="h-20 rounded-2xl bg-white/[0.02] animate-pulse" />)}
+      {[1,2,3,4].map(i => <div key={i} className="h-20 rounded-2xl bg-white/[0.04] animate-pulse" />)}
     </div>
   );
 
@@ -105,13 +105,13 @@ export function Tasks() {
           <p className="text-slate-400 text-lg font-light">Manage your daily priorities</p>
         </div>
 
-        <form onSubmit={addTask} className="bg-white/[0.01] border border-white/[0.05] rounded-3xl p-5 space-y-4">
+        <form onSubmit={addTask} className="bg-white/[0.03] border border-white/[0.07] rounded-3xl p-5 space-y-4">
           <div className="flex items-center gap-3">
             <Input
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
               placeholder="Add a new task..."
-              className="flex-1 bg-white/[0.02] border-white/[0.05]"
+              className="flex-1 bg-white/[0.04] border-white/[0.07]"
             />
             <Button type="submit" className="bg-emerald-500 text-black hover:bg-emerald-400 shrink-0">
               <Plus className="w-5 h-5 mr-2" /> Add
@@ -126,7 +126,7 @@ export function Tasks() {
                   onClick={() => setNewPriority(p)}
                   className={cn(
                     "px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest border transition-all",
-                    newPriority === p ? priorityColors[p] : "bg-white/[0.02] text-slate-500 border-white/[0.05] hover:border-white/10"
+                    newPriority === p ? priorityColors[p] : "bg-white/[0.04] text-slate-500 border-white/[0.07] hover:border-white/10"
                   )}
                 >
                   {p}
@@ -137,7 +137,7 @@ export function Tasks() {
               type="date"
               value={newDueDate}
               onChange={e => setNewDueDate(e.target.value)}
-              className="w-full sm:w-40 bg-white/[0.02] border-white/[0.05] font-mono text-sm text-slate-400"
+              className="w-full sm:w-40 bg-white/[0.04] border-white/[0.07] font-mono text-sm text-slate-400"
               title="Due date (optional)"
             />
           </div>
@@ -145,7 +145,7 @@ export function Tasks() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="col-span-1 md:col-span-2 bg-white/[0.01]">
+        <Card className="col-span-1 md:col-span-2 bg-white/[0.03]">
           <CardHeader>
             <CardTitle className="text-sm uppercase tracking-widest font-mono text-slate-400">Active Tasks</CardTitle>
           </CardHeader>
@@ -157,7 +157,7 @@ export function Tasks() {
                     <motion.div
                       key={task.id} layout
                       initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                      className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-all duration-300 group"
+                      className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-all duration-300 group"
                     >
                       <div className="flex items-center gap-4">
                         <button onClick={() => toggleTask(task)} className="text-slate-500 hover:text-emerald-400 transition-colors">
@@ -198,7 +198,7 @@ export function Tasks() {
         </Card>
 
         <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-900/5 border-emerald-500/20 relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-emerald-900/30 to-emerald-900/10 border-emerald-500/20 relative overflow-hidden">
             <div className="absolute top-[-50%] right-[-20%] w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full" />
             <CardHeader>
               <CardTitle className="text-emerald-400/80 text-sm uppercase tracking-widest font-mono">Progress</CardTitle>
@@ -221,14 +221,14 @@ export function Tasks() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/[0.01]">
+          <Card className="bg-white/[0.03]">
             <CardHeader>
               <CardTitle className="text-sm uppercase tracking-widest font-mono text-slate-500">Completed</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {tasks.filter(t => t.completed).map(task => (
-                  <div key={task.id} className="flex items-center gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] opacity-50 hover:opacity-100 transition-opacity duration-300">
+                  <div key={task.id} className="flex items-center gap-3 p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] opacity-50 hover:opacity-100 transition-opacity duration-300">
                     <button onClick={() => toggleTask(task)} className="text-emerald-500">
                       <CheckCircle2 className="w-5 h-5" />
                     </button>
@@ -248,31 +248,31 @@ export function Tasks() {
       <AnimatePresence>
         {editingTask && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between">
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2"><Edit3 className="w-5 h-5 text-blue-400" /> Edit Task</h3>
                 <button onClick={() => setEditingTask(null)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={handleSaveEdit} className="p-6 space-y-5">
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Title</label>
-                  <Input required value={editTitle} onChange={e => setEditTitle(e.target.value)} className="bg-white/[0.02] border-white/[0.05]" placeholder="Task title..." />
+                  <Input required value={editTitle} onChange={e => setEditTitle(e.target.value)} className="bg-white/[0.04] border-white/[0.07]" placeholder="Task title..." />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Priority</label>
                   <div className="flex gap-2">
                     {(["low", "medium", "high"] as const).map(p => (
                       <button key={p} type="button" onClick={() => setEditPriority(p)}
-                        className={cn("flex-1 py-2 rounded-xl text-xs font-mono uppercase tracking-widest border transition-all", editPriority === p ? priorityColors[p] : "bg-white/[0.02] text-slate-500 border-white/[0.05] hover:border-white/10")}
+                        className={cn("flex-1 py-2 rounded-xl text-xs font-mono uppercase tracking-widest border transition-all", editPriority === p ? priorityColors[p] : "bg-white/[0.04] text-slate-500 border-white/[0.07] hover:border-white/10")}
                       >{p}</button>
                     ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Due Date</label>
-                  <Input type="date" value={editDueDate} onChange={e => setEditDueDate(e.target.value)} className="bg-white/[0.02] border-white/[0.05] font-mono text-sm" />
+                  <Input type="date" value={editDueDate} onChange={e => setEditDueDate(e.target.value)} className="bg-white/[0.04] border-white/[0.07] font-mono text-sm" />
                 </div>
-                <div className="flex justify-between items-center pt-4 border-t border-white/[0.05]">
+                <div className="flex justify-between items-center pt-4 border-t border-white/[0.07]">
                   <Button type="button" variant="ghost" onClick={() => { deleteTask(editingTask.id); setEditingTask(null); }} className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
                     <Trash2 className="w-4 h-4 mr-2" /> Delete
                   </Button>

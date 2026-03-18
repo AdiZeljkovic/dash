@@ -28,7 +28,10 @@
       "Bash(\"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic/.gitignore\":*)",
       "Bash(git -C \"c:/Users/adize/OneDrive/Documents/Projekti/AdiZeljkovic\" add .)",
       "Bash(git -C:*)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"feat: switch vaktija to vaktija.ba API\")",
+      "Bash(git push)",
+      "Bash(git add src/components/Books.tsx src/components/Bookmarks.tsx src/components/Budget.tsx src/components/Tasks.tsx src/components/Notes.tsx src/components/Goals.tsx src/components/Habits.tsx src/components/Home.tsx src/components/CRM.tsx)"
     ],
     "additionalDirectories": [
       "C:\\Users\\adize\\OneDrive\\Documents\\Projekti\\AdiZeljkovic",

@@ -149,7 +149,7 @@ export function News() {
             placeholder="Search news..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64 bg-white/[0.02] border-white/[0.05]" 
+            className="w-64 bg-white/[0.04] border-white/[0.07]" 
           />
           <Button onClick={() => setIsSourceModalOpen(true)} className="bg-white/[0.05] text-white hover:bg-white/[0.1] border border-white/[0.1]">
             <Settings className="w-4 h-4 mr-2" /> Manage Sources
@@ -167,7 +167,7 @@ export function News() {
               className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap flex items-center ${
                 filter === cat.id 
                   ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
-                  : "bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]"
+                  : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
               }`}
             >
               <Icon className="w-4 h-4 mr-2" /> {cat.label}
@@ -197,7 +197,7 @@ export function News() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full bg-white/[0.01] border-white/[0.05] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
+                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
                     <img 
                       src={article.image} 
@@ -205,14 +205,14 @@ export function News() {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#020202] via-black/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080c18] via-black/40 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                     <div className="absolute top-4 left-4">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border backdrop-blur-md ${getCategoryColor(article.category)}`}>
                         {article.category}
                       </span>
                     </div>
                   </div>
-                  <CardContent className="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#020202] to-transparent -mt-12 pt-14">
+                  <CardContent className="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#080c18] to-transparent -mt-12 pt-14">
                     <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-3 uppercase tracking-wider">
                       <span className="font-medium text-emerald-400 flex items-center gap-1.5">
                         <Globe className="w-3 h-3" /> {article.sourceName}
@@ -223,7 +223,7 @@ export function News() {
                       {article.title}
                     </h3>
                     
-                    <div className="mt-auto pt-4 border-t border-white/[0.05]">
+                    <div className="mt-auto pt-4 border-t border-white/[0.07]">
                       <a href={article.url} target="_blank" rel="noopener noreferrer" className="w-full">
                         <Button variant="ghost" size="sm" className="w-full text-slate-400 hover:text-white group-hover:bg-white/[0.05]">
                           Read Article <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -243,7 +243,7 @@ export function News() {
           <Button 
             onClick={handleLoadMore} 
             disabled={isLoadingMore || sources.length === 0}
-            className="bg-white/[0.02] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
+            className="bg-white/[0.04] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
           >
             {isLoadingMore ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Loading...</>
@@ -263,9 +263,9 @@ export function News() {
           >
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl bg-[#0a0a0a] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
+              className="w-full max-w-2xl bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
             >
-              <div className="p-6 border-b border-white/[0.05] flex items-center justify-between shrink-0">
+              <div className="p-6 border-b border-white/[0.07] flex items-center justify-between shrink-0">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
                   <Rss className="w-5 h-5 text-emerald-400" /> Manage News Sources
                 </h3>
@@ -274,31 +274,31 @@ export function News() {
               
               <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
                 {/* Add Source Form */}
-                <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-white/[0.05] bg-white/[0.01] overflow-y-auto">
+                <div className="w-full md:w-1/2 p-6 border-b md:border-b-0 md:border-r border-white/[0.07] bg-white/[0.03] overflow-y-auto">
                   <h4 className="text-sm font-mono uppercase tracking-widest text-slate-400 mb-6">Add New Source</h4>
                   <form onSubmit={handleAddSource} className="space-y-4">
                     <div className="space-y-2">
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Portal Name</label>
                       <Input 
                         required value={newSourceName} onChange={(e) => setNewSourceName(e.target.value)}
-                        className="bg-white/[0.02] border-white/[0.05]" placeholder="e.g. The Verge"
+                        className="bg-white/[0.04] border-white/[0.07]" placeholder="e.g. The Verge"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">RSS / Website URL</label>
                       <Input 
                         required value={newSourceUrl} onChange={(e) => setNewSourceUrl(e.target.value)}
-                        className="bg-white/[0.02] border-white/[0.05]" placeholder="https://..."
+                        className="bg-white/[0.04] border-white/[0.07]" placeholder="https://..."
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
                       <select 
                         value={newSourceCategory} onChange={(e) => setNewSourceCategory(e.target.value as Category)}
-                        className="w-full h-10 px-3 rounded-md bg-white/[0.02] border border-white/[0.05] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                        className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                       >
                         {CATEGORIES.filter(c => c.id !== "all").map(cat => (
-                          <option key={cat.id} value={cat.id} className="bg-[#0a0a0a]">{cat.label}</option>
+                          <option key={cat.id} value={cat.id} className="bg-[#0d1124]">{cat.label}</option>
                         ))}
                       </select>
                     </div>
@@ -309,14 +309,14 @@ export function News() {
                 </div>
 
                 {/* Active Sources List */}
-                <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-[#0a0a0a]">
+                <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-[#0d1124]">
                   <h4 className="text-sm font-mono uppercase tracking-widest text-slate-400 mb-6">Active Sources ({sources.length})</h4>
                   <div className="space-y-3">
                     {sources.length === 0 ? (
                       <p className="text-slate-500 text-sm font-light text-center py-10">No sources added yet.</p>
                     ) : (
                       sources.map(source => (
-                        <div key={source.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] group hover:bg-white/[0.04] transition-colors">
+                        <div key={source.id} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.04] border border-white/[0.07] group hover:bg-white/[0.04] transition-colors">
                           <div className="min-w-0 flex-1 pr-4">
                             <p className="font-medium text-white text-sm truncate">{source.name}</p>
                             <div className="flex items-center gap-2 mt-1">
