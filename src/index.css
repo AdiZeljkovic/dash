@@ -6,8 +6,39 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Default accent (emerald) — also used as fallback */
+:root {
+  --accent-400: #34d399;
+  --accent-500: #10b981;
+  --accent-glow: rgba(16,185,129,0.5);
+  --accent-subtle: rgba(16,185,129,0.1);
+  --accent-border: rgba(16,185,129,0.2);
+}
+[data-accent="emerald"] {
+  --accent-400: #34d399; --accent-500: #10b981;
+  --accent-glow: rgba(16,185,129,0.5); --accent-subtle: rgba(16,185,129,0.1); --accent-border: rgba(16,185,129,0.2);
+}
+[data-accent="blue"] {
+  --accent-400: #60a5fa; --accent-500: #3b82f6;
+  --accent-glow: rgba(59,130,246,0.5); --accent-subtle: rgba(59,130,246,0.1); --accent-border: rgba(59,130,246,0.2);
+}
+[data-accent="violet"] {
+  --accent-400: #a78bfa; --accent-500: #8b5cf6;
+  --accent-glow: rgba(139,92,246,0.5); --accent-subtle: rgba(139,92,246,0.1); --accent-border: rgba(139,92,246,0.2);
+}
+[data-accent="orange"] {
+  --accent-400: #fb923c; --accent-500: #f97316;
+  --accent-glow: rgba(249,115,22,0.5); --accent-subtle: rgba(249,115,22,0.1); --accent-border: rgba(249,115,22,0.2);
+}
+[data-accent="rose"] {
+  --accent-400: #fb7185; --accent-500: #f43f5e;
+  --accent-glow: rgba(244,63,94,0.5); --accent-subtle: rgba(244,63,94,0.1); --accent-border: rgba(244,63,94,0.2);
+}
+
 body {
-  @apply bg-[#080c18] text-slate-300 antialiased selection:bg-emerald-500/30;
+  @apply bg-[#080c18] text-slate-300 antialiased;
+  selection-color: white;
+  selection-background-color: var(--accent-subtle);
   overflow-x: hidden;
 }
 
@@ -49,13 +80,13 @@ body {
 .markdown-body h2 { @apply text-2xl font-semibold mt-5 mb-3 text-white; }
 .markdown-body h3 { @apply text-xl font-medium mt-4 mb-2 text-white; }
 .markdown-body p { @apply mb-4 text-slate-300 leading-relaxed; }
-.markdown-body a { @apply text-emerald-400 hover:underline; }
+.markdown-body a { color: var(--accent-400); @apply hover:underline; }
 .markdown-body ul { @apply list-disc pl-6 mb-4 text-slate-300; }
 .markdown-body ol { @apply list-decimal pl-6 mb-4 text-slate-300; }
 .markdown-body strong { @apply font-bold text-white; }
 .markdown-body em { @apply italic; }
-.markdown-body blockquote { @apply border-l-4 border-emerald-500 pl-4 italic text-slate-400 my-4; }
-.markdown-body code { @apply bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono text-emerald-300; }
+.markdown-body blockquote { @apply border-l-4 pl-4 italic text-slate-400 my-4; border-color: var(--accent-500); }
+.markdown-body code { @apply bg-white/10 px-1.5 py-0.5 rounded text-sm font-mono; color: var(--accent-400); }
 .markdown-body pre { @apply bg-black/50 p-4 rounded-xl overflow-x-auto mb-4 border border-white/10; }
 .markdown-body pre code { @apply bg-transparent p-0 text-slate-300; }
 

@@ -113,7 +113,7 @@ export function Budget() {
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="outline" className="border-white/[0.1] text-slate-300 hover:bg-white/[0.05] hover:text-white">
             <Tag className="w-4 h-4 mr-2" /> Categories
           </Button>
-          <Button onClick={() => openTransactionModal("income")} variant="outline" className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/50">
+          <Button onClick={() => openTransactionModal("income")} variant="outline" className="border-[var(--accent-border)] text-[var(--accent-400)] hover:bg-[var(--accent-subtle)] hover:border-[var(--accent-border)]">
             <TrendingUp className="w-4 h-4 mr-2" /> Add Income
           </Button>
           <Button onClick={() => openTransactionModal("expense")} variant="outline" className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50">
@@ -133,10 +133,10 @@ export function Budget() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-900/30 to-emerald-900/10 border-emerald-500/20 relative overflow-hidden">
-          <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-emerald-500/10 blur-[60px] rounded-full" />
+        <Card className="border-[var(--accent-border)] relative overflow-hidden" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--accent-500) 15%, transparent), color-mix(in srgb, var(--accent-500) 5%, transparent))" }}>
+          <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-[var(--accent-subtle)] blur-[60px] rounded-full" />
           <CardHeader className="pb-2">
-            <CardTitle className="text-emerald-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingUp className="w-4 h-4" /> Total Income</CardTitle>
+            <CardTitle className="text-[var(--accent-400)]/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingUp className="w-4 h-4" /> Total Income</CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="text-3xl md:text-5xl font-light text-white tracking-tighter mb-2">KM {totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
@@ -197,7 +197,7 @@ export function Budget() {
         <Card className="bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-widest font-mono text-slate-400">
-              <DollarSign className="w-4 h-4 text-emerald-400" /> Recent Transactions
+              <DollarSign className="w-4 h-4 text-[var(--accent-400)]" /> Recent Transactions
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -208,7 +208,7 @@ export function Budget() {
                 transactions.map((t) => (
                   <div key={t.id} className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors group">
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${t.type === "income" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>
+                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${t.type === "income" ? "bg-[var(--accent-subtle)] text-[var(--accent-400)] border border-[var(--accent-border)]" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>
                         {t.type === "income" ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
                       </div>
                       <div className="min-w-0">
@@ -218,7 +218,7 @@ export function Budget() {
                     </div>
                     <div className="text-right flex items-center gap-4 shrink-0">
                       <div>
-                        <p className={`font-mono text-lg tracking-tight ${t.type === "income" ? "text-emerald-400" : "text-slate-200"}`}>
+                        <p className={`font-mono text-lg tracking-tight ${t.type === "income" ? "text-[var(--accent-400)]" : "text-slate-200"}`}>
                           {t.type === "income" ? "+" : "-"}KM {t.amount.toFixed(2)}
                         </p>
                         <p className="text-xs text-slate-500 font-mono mt-1 uppercase tracking-wider truncate max-w-[80px]">{t.category}</p>
@@ -242,7 +242,7 @@ export function Budget() {
             <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="w-full max-w-md bg-[#0d1124] border border-white/[0.1] rounded-3xl shadow-2xl overflow-hidden">
               <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
-                  {txType === "income" ? <TrendingUp className="w-5 h-5 text-emerald-400" /> : <TrendingDown className="w-5 h-5 text-red-400" />}
+                  {txType === "income" ? <TrendingUp className="w-5 h-5 text-[var(--accent-400)]" /> : <TrendingDown className="w-5 h-5 text-red-400" />}
                   Add {txType === "income" ? "Income" : "Expense"}
                 </h3>
                 <button onClick={() => setIsTransactionModalOpen(false)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
@@ -266,13 +266,13 @@ export function Budget() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
-                    <select required value={txCategory} onChange={(e) => setTxCategory(e.target.value)} className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none">
+                    <select required value={txCategory} onChange={(e) => setTxCategory(e.target.value)} className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 appearance-none">
                       <option value="" disabled>Select...</option>
                       {categories[txType].map(cat => <option key={cat} value={cat} className="bg-[#0d1124]">{cat}</option>)}
                     </select>
                   </div>
                 </div>
-                <Button type="submit" className={`w-full mt-4 ${txType === "income" ? "bg-emerald-500 hover:bg-emerald-400 text-black" : "bg-red-500 hover:bg-red-400 text-white"}`}>
+                <Button type="submit" className={`w-full mt-4 ${txType === "income" ? "bg-[var(--accent-500)] hover:bg-[var(--accent-400)] text-black" : "bg-red-500 hover:bg-red-400 text-white"}`}>
                   Save Transaction
                 </Button>
               </form>

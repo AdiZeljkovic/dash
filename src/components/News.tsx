@@ -125,7 +125,7 @@ export function News() {
       case 'gaming': return 'text-purple-400 bg-purple-500/10 border-purple-500/20';
       case 'tech': return 'text-blue-400 bg-blue-500/10 border-blue-500/20';
       case 'business': return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
-      case 'world': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+      case 'world': return 'text-[var(--accent-400)] bg-[var(--accent-subtle)] border-[var(--accent-border)]';
       case 'science': return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
       case 'local': return 'text-orange-400 bg-orange-500/10 border-orange-500/20';
       default: return 'text-slate-400 bg-slate-500/10 border-slate-500/20';
@@ -166,7 +166,7 @@ export function News() {
               onClick={() => setFilter(cat.id)}
               className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap flex items-center ${
                 filter === cat.id 
-                  ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
+                  ? "bg-[var(--accent-500)] text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
                   : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
               }`}
             >
@@ -181,7 +181,7 @@ export function News() {
           <Rss className="w-16 h-16 text-slate-600 mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-medium text-white mb-2">No articles found</h3>
           <p className="text-slate-400 font-light">Try adjusting your filters or add more news sources.</p>
-          <Button onClick={() => setIsSourceModalOpen(true)} className="mt-6 bg-emerald-500 text-black hover:bg-emerald-400">
+          <Button onClick={() => setIsSourceModalOpen(true)} className="mt-6 bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
             <Plus className="w-4 h-4 mr-2" /> Add News Source
           </Button>
         </div>
@@ -197,7 +197,7 @@ export function News() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
+                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-[var(--accent-border)] hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer">
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
                     <img 
                       src={article.image} 
@@ -214,12 +214,12 @@ export function News() {
                   </div>
                   <CardContent className="p-6 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#080c18] to-transparent -mt-12 pt-14">
                     <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-3 uppercase tracking-wider">
-                      <span className="font-medium text-emerald-400 flex items-center gap-1.5">
+                      <span className="font-medium text-[var(--accent-400)] flex items-center gap-1.5">
                         <Globe className="w-3 h-3" /> {article.sourceName}
                       </span>
                       <span>{article.time}</span>
                     </div>
-                    <h3 className="font-medium text-xl text-white line-clamp-3 mb-4 leading-tight group-hover:text-emerald-400 transition-colors">
+                    <h3 className="font-medium text-xl text-white line-clamp-3 mb-4 leading-tight group-hover:text-[var(--accent-400)] transition-colors">
                       {article.title}
                     </h3>
                     
@@ -267,7 +267,7 @@ export function News() {
             >
               <div className="p-6 border-b border-white/[0.07] flex items-center justify-between shrink-0">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
-                  <Rss className="w-5 h-5 text-emerald-400" /> Manage News Sources
+                  <Rss className="w-5 h-5 text-[var(--accent-400)]" /> Manage News Sources
                 </h3>
                 <button onClick={() => setIsSourceModalOpen(false)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
               </div>
@@ -295,14 +295,14 @@ export function News() {
                       <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Category</label>
                       <select 
                         value={newSourceCategory} onChange={(e) => setNewSourceCategory(e.target.value as Category)}
-                        className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                        className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 appearance-none"
                       >
                         {CATEGORIES.filter(c => c.id !== "all").map(cat => (
                           <option key={cat.id} value={cat.id} className="bg-[#0d1124]">{cat.label}</option>
                         ))}
                       </select>
                     </div>
-                    <Button type="submit" className="w-full mt-2 bg-emerald-500 hover:bg-emerald-400 text-black">
+                    <Button type="submit" className="w-full mt-2 bg-[var(--accent-500)] hover:bg-[var(--accent-400)] text-black">
                       <Plus className="w-4 h-4 mr-2" /> Add Source
                     </Button>
                   </form>

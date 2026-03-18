@@ -134,7 +134,7 @@ export function Home() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search the web..."
-            className="pl-12 h-14 bg-white/[0.04] border-white/[0.07] rounded-3xl text-base focus-visible:ring-emerald-500/50 shadow-inner"
+            className="pl-12 h-14 bg-white/[0.04] border-white/[0.07] rounded-3xl text-base focus-visible:ring-[var(--accent-500)]/50 shadow-inner"
           />
         </form>
       </header>
@@ -179,7 +179,7 @@ export function Home() {
         {/* Vaktija Widget */}
         <Card className="col-span-1 md:col-span-2 bg-white/[0.03] border-white/[0.07]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-emerald-400/80 text-sm uppercase tracking-widest font-mono">
+            <CardTitle className="flex items-center gap-2 text-[var(--accent-400)]/80 text-sm uppercase tracking-widest font-mono">
               <Clock className="w-4 h-4" />
               Vaktija — {format(new Date(), "dd. MMMM yyyy.")}
             </CardTitle>
@@ -189,7 +189,7 @@ export function Home() {
               <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                 {prayerTimes.map((prayer) => (
                   <div key={prayer.name} className="flex flex-col items-center justify-center p-6 rounded-3xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-all duration-300 group">
-                    <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-3 group-hover:text-emerald-400/80 transition-colors">{prayer.name}</span>
+                    <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-3 group-hover:text-[var(--accent-400)]/80 transition-colors">{prayer.name}</span>
                     <span className="text-2xl font-mono text-white/90 font-light tracking-tight">{prayer.time}</span>
                   </div>
                 ))}

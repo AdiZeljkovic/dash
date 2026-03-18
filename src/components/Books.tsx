@@ -110,7 +110,7 @@ export function Books() {
               className="w-full md:w-64 pl-9 bg-white/[0.04] border-white/[0.07]"
             />
           </div>
-          <Button onClick={() => setIsAddModalOpen(true)} className="bg-emerald-500 text-black hover:bg-emerald-400">
+          <Button onClick={() => setIsAddModalOpen(true)} className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
             <Plus className="w-5 h-5 mr-2" /> Add Book
           </Button>
         </div>
@@ -123,7 +123,7 @@ export function Books() {
             onClick={() => setFilter(f)}
             className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
               filter === f 
-                ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
+                ? "bg-[var(--accent-500)] text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
                 : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
             }`}
           >
@@ -145,7 +145,7 @@ export function Books() {
             >
               <Card 
                 onClick={() => openBookDetails(book)}
-                className="h-full bg-white/[0.03] border-white/[0.07] hover:border-emerald-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer"
+                className="h-full bg-white/[0.03] border-white/[0.07] hover:border-[var(--accent-border)] hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col cursor-pointer"
               >
                 <div className="relative aspect-[2/3] w-full overflow-hidden rounded-t-2xl">
                   <img 
@@ -163,7 +163,7 @@ export function Books() {
                       </Button>
                     </div>
                     {book.status === "reading" && (
-                      <Button size="sm" className="w-full bg-emerald-500 hover:bg-emerald-400 text-black shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                      <Button size="sm" className="w-full bg-[var(--accent-500)] hover:bg-[var(--accent-400)] text-black shadow-[0_0_15px_rgba(16,185,129,0.4)]">
                         Update Progress
                       </Button>
                     )}
@@ -171,7 +171,7 @@ export function Books() {
 
                   <div className="absolute top-3 left-3">
                     {book.status === "reading" && (
-                      <span className="bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-300 text-[10px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                      <span className="bg-[var(--accent-subtle)] backdrop-blur-md border border-[var(--accent-border)] text-[var(--accent-400)] text-[10px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
                         <Clock className="w-3 h-3" /> Reading
                       </span>
                     )}
@@ -184,7 +184,7 @@ export function Books() {
                 </div>
                 
                 <CardContent className="p-5 flex-1 flex flex-col relative z-10 bg-gradient-to-t from-[#080c18] to-transparent -mt-12 pt-14">
-                  <h3 className="font-medium text-lg text-white line-clamp-1 mb-1 group-hover:text-emerald-400 transition-colors" title={book.title}>{book.title}</h3>
+                  <h3 className="font-medium text-lg text-white line-clamp-1 mb-1 group-hover:text-[var(--accent-400)] transition-colors" title={book.title}>{book.title}</h3>
                   <p className="text-xs text-slate-400 mb-4 font-mono uppercase tracking-wider">{book.author}</p>
                   
                   <div className="mt-auto">
@@ -192,10 +192,10 @@ export function Books() {
                       <div className="space-y-2">
                         <div className="flex justify-between text-xs font-mono text-slate-500">
                           <span>Progress</span>
-                          <span className="text-emerald-400">{book.progress}%</span>
+                          <span className="text-[var(--accent-400)]">{book.progress}%</span>
                         </div>
                         <div className="h-1.5 w-full bg-white/[0.05] rounded-full overflow-hidden">
-                          <div className="h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style={{ width: `${book.progress}%` }} />
+                          <div className="h-full bg-[var(--accent-500)] rounded-full shadow-[0_0_10px_var(--accent-glow)]" style={{ width: `${book.progress}%` }} />
                         </div>
                       </div>
                     )}
@@ -227,7 +227,7 @@ export function Books() {
             >
               <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-emerald-400" /> Add New Book
+                  <BookOpen className="w-5 h-5 text-[var(--accent-400)]" /> Add New Book
                 </h3>
                 <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
               </div>
@@ -257,14 +257,14 @@ export function Books() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Status</label>
                   <select 
                     value={newStatus} onChange={(e) => setNewStatus(e.target.value as BookStatus)}
-                    className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                    className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 appearance-none"
                   >
                     <option value="want-to-read" className="bg-[#0d1124]">Want to Read</option>
                     <option value="reading" className="bg-[#0d1124]">Reading</option>
                     <option value="read" className="bg-[#0d1124]">Read</option>
                   </select>
                 </div>
-                <Button type="submit" className="w-full mt-4 bg-emerald-500 hover:bg-emerald-400 text-black">
+                <Button type="submit" className="w-full mt-4 bg-[var(--accent-500)] hover:bg-[var(--accent-400)] text-black">
                   Add to Library
                 </Button>
               </form>
@@ -295,7 +295,7 @@ export function Books() {
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Status</label>
                     <select 
                       value={editStatus} onChange={(e) => setEditStatus(e.target.value as BookStatus)}
-                      className="w-full h-10 px-3 rounded-md bg-white/[0.05] border border-white/[0.1] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                      className="w-full h-10 px-3 rounded-md bg-white/[0.05] border border-white/[0.1] text-sm text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 appearance-none"
                     >
                       <option value="want-to-read" className="bg-[#0d1124]">Want to Read</option>
                       <option value="reading" className="bg-[#0d1124]">Reading</option>
@@ -307,12 +307,12 @@ export function Books() {
                     <div className="space-y-2 text-left">
                       <div className="flex justify-between">
                         <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Progress</label>
-                        <span className="text-xs font-mono text-emerald-400">{editProgress}%</span>
+                        <span className="text-xs font-mono text-[var(--accent-400)]">{editProgress}%</span>
                       </div>
                       <input 
                         type="range" min="0" max="100" 
                         value={editProgress} onChange={(e) => setEditProgress(parseInt(e.target.value))}
-                        className="w-full accent-emerald-500"
+                        className="w-full"
                       />
                     </div>
                   )}
@@ -345,7 +345,7 @@ export function Books() {
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
                   placeholder="Write your thoughts, quotes, or a summary here..."
-                  className="flex-1 w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[200px] mb-6"
+                  className="flex-1 w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 resize-none min-h-[200px] mb-6"
                 />
 
                 <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/[0.07]">
@@ -360,7 +360,7 @@ export function Books() {
                     <Button variant="outline" onClick={() => setSelectedBook(null)} className="border-white/[0.1] text-slate-300 hover:bg-white/[0.05]">
                       Cancel
                     </Button>
-                    <Button onClick={handleSaveBookDetails} className="bg-emerald-500 text-black hover:bg-emerald-400">
+                    <Button onClick={handleSaveBookDetails} className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
                       Save Changes
                     </Button>
                   </div>

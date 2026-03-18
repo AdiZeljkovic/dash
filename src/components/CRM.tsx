@@ -53,7 +53,7 @@ export function CRM() {
 
         <header className="flex flex-col md:flex-row md:items-start justify-between gap-6 bg-white/[0.03] border border-white/[0.07] p-4 md:p-8 rounded-3xl relative overflow-hidden">
           <div className={`absolute top-0 left-0 w-1 h-full ${
-            selectedClient.status === 'Active' ? 'bg-emerald-500' :
+            selectedClient.status === 'Active' ? 'bg-[var(--accent-500)]' :
             selectedClient.status === 'Pending' ? 'bg-yellow-500' :
             'bg-slate-500'
           }`} />
@@ -66,7 +66,7 @@ export function CRM() {
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-2xl md:text-4xl font-semibold tracking-tighter text-white">{selectedClient.name}</h1>
                 <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border ${
-                  selectedClient.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                  selectedClient.status === 'Active' ? 'bg-[var(--accent-subtle)] text-[var(--accent-400)] border-[var(--accent-border)]' :
                   selectedClient.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                   'bg-slate-500/10 text-slate-400 border-slate-500/20'
                 }`}>
@@ -94,7 +94,7 @@ export function CRM() {
               onClick={() => setActiveTab(tab)}
               className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
                 activeTab === tab 
-                  ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
+                  ? "bg-[var(--accent-500)] text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
                   : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
               }`}
             >
@@ -148,7 +148,7 @@ export function CRM() {
                         placeholder="Log a note, call summary, or update..." 
                         className="flex-1 bg-white/[0.04] border-white/[0.07]" 
                       />
-                      <Button type="submit" className="bg-emerald-500 text-black hover:bg-emerald-400"><Send className="w-4 h-4 mr-2" /> Log</Button>
+                      <Button type="submit" className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]"><Send className="w-4 h-4 mr-2" /> Log</Button>
                     </form>
                   </CardContent>
                 </Card>
@@ -159,7 +159,7 @@ export function CRM() {
                       <CardContent className="p-6 flex gap-6">
                         <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.07] flex items-center justify-center shrink-0">
                           {comm.type === 'email' ? <Mail className="w-5 h-5 text-blue-400" /> :
-                           comm.type === 'call' ? <Phone className="w-5 h-5 text-emerald-400" /> :
+                           comm.type === 'call' ? <Phone className="w-5 h-5 text-[var(--accent-400)]" /> :
                            comm.type === 'meeting' ? <Users className="w-5 h-5 text-purple-400" /> :
                            <MessageSquare className="w-5 h-5 text-orange-400" />}
                         </div>
@@ -204,7 +204,7 @@ export function CRM() {
                             <td className="px-8 py-5 text-slate-300 font-mono tracking-tight">{inv.amount}</td>
                             <td className="px-8 py-5">
                               <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border ${
-                                inv.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                inv.status === 'Paid' ? 'bg-[var(--accent-subtle)] text-[var(--accent-400)] border-[var(--accent-border)]' :
                                 inv.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                                 'bg-red-500/10 text-red-400 border-red-500/20'
                               }`}>
@@ -278,20 +278,20 @@ export function CRM() {
         </div>
         <div className="flex items-center gap-3">
           <Input placeholder="Search clients..." className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]" />
-          <Button className="bg-emerald-500 text-black hover:bg-emerald-400"><Plus className="w-4 h-4 mr-2" /> Add Client</Button>
+          <Button className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]"><Plus className="w-4 h-4 mr-2" /> Add Client</Button>
         </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-gradient-to-br from-emerald-900/30 to-emerald-900/10 border-emerald-500/20 relative overflow-hidden">
-          <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-emerald-500/10 blur-[60px] rounded-full" />
+        <Card className="border-[var(--accent-border)] relative overflow-hidden" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--accent-500) 15%, transparent), color-mix(in srgb, var(--accent-500) 5%, transparent))" }}>
+          <div className="absolute top-[-50%] right-[-20%] w-48 h-48 bg-[var(--accent-subtle)] blur-[60px] rounded-full" />
           <CardHeader className="pb-2">
-            <CardTitle className="text-emerald-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest">Total Revenue</CardTitle>
+            <CardTitle className="text-[var(--accent-400)]/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="flex items-end gap-3">
               <span className="text-5xl font-light text-white tracking-tighter">KM 48,700</span>
-              <span className="flex items-center text-emerald-400 text-sm mb-2 font-mono">
+              <span className="flex items-center text-[var(--accent-400)] text-sm mb-2 font-mono">
                 <ArrowUpRight className="w-4 h-4 mr-1" /> +12%
               </span>
             </div>
@@ -357,12 +357,12 @@ export function CRM() {
                       <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-sm font-bold border border-white/5 shadow-inner group-hover:scale-110 transition-transform">
                         {client.name.charAt(0)}
                       </div>
-                      <span className="text-base group-hover:text-emerald-400 transition-colors">{client.name}</span>
+                      <span className="text-base group-hover:text-[var(--accent-400)] transition-colors">{client.name}</span>
                     </td>
                     <td className="px-8 py-5 text-slate-400">{client.contact}</td>
                     <td className="px-8 py-5">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border ${
-                        client.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                        client.status === 'Active' ? 'bg-[var(--accent-subtle)] text-[var(--accent-400)] border-[var(--accent-border)]' :
                         client.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
                         'bg-slate-500/10 text-slate-400 border-slate-500/20'
                       }`}>

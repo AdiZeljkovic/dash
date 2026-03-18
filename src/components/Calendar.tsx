@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { api } from "../lib/api";
+import type { Task, Habit } from "../lib/api";
+import { cn } from "../lib/utils";
+import { CheckSquare, Clock as ClockIcon2 } from "lucide-react";
 
 type CalendarEvent = {
   id: string;
@@ -20,11 +23,19 @@ export function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [habits, setHabits] = useState<Habit[]>([]);
 
   useEffect(() => {
-    api.calendar.getAll()
-      .then(apiEvents => setEvents(apiEvents.map(e => ({ ...e, date: parseISO(e.date) }))))
-      .catch(console.error);
+    Promise.all([
+      api.calendar.getAll(),
+      api.tasks.getAll().catch(() => []),
+      api.habits.getAll().catch(() => []),
+    ]).then(([apiEvents, apiTasks, apiHabits]) => {
+      setEvents(apiEvents.map(e => ({ ...e, date: parseISO(e.date) })));
+      setTasks(apiTasks);
+      setHabits(apiHabits);
+    }).catch(console.error);
   }, []);
   
   // Side panel state
@@ -95,6 +106,9 @@ export function Calendar() {
       formattedDate = format(day, dateFormat);
       const cloneDay = day;
       const dayEvents = events.filter(e => isSameDay(e.date, cloneDay));
+      const dayStr = format(cloneDay, "yyyy-MM-dd");
+      const dayTasks = tasks.filter(t => t.dueDate === dayStr && !t.completed);
+      const dayHabits = habits.filter(h => h.completedDates.includes(dayStr));
       const isSelected = isSameDay(cloneDay, selectedDate);
       const isToday = isSameDay(cloneDay, new Date());
 
@@ -107,10 +121,10 @@ export function Calendar() {
           } ${isSelected ? "bg-white/[0.03]" : ""}`}
         >
           {isSelected && (
-            <motion.div layoutId="selected-day" className="absolute inset-0 border-2 border-emerald-500/30 rounded-lg pointer-events-none z-10" transition={{ type: "spring", stiffness: 300, damping: 30 }} />
+            <motion.div layoutId="selected-day" className="absolute inset-0 border-2 border-[var(--accent-border)] rounded-lg pointer-events-none z-10" transition={{ type: "spring", stiffness: 300, damping: 30 }} />
           )}
           <span className={`text-sm self-end w-8 h-8 flex items-center justify-center rounded-full transition-colors relative z-20 ${
-            isToday ? "bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.4)] font-bold" : 
+            isToday ? "bg-[var(--accent-500)] text-black shadow-[0_0_15px_rgba(16,185,129,0.4)] font-bold" : 
             isSelected ? "bg-white/10 text-white" : "group-hover:bg-white/5"
           }`}>
             {formattedDate}
@@ -118,7 +132,7 @@ export function Calendar() {
           
           <div className="mt-1 flex-1 overflow-y-auto scrollbar-hide space-y-1 relative z-20">
             {dayEvents.map(ev => (
-              <div 
+              <div
                 key={ev.id}
                 onClick={(e) => handleEventClick(ev, e)}
                 className={`text-[10px] sm:text-xs bg-${ev.color}-500/10 text-${ev.color}-400 p-1.5 rounded-lg border border-${ev.color}-500/20 truncate font-medium hover:bg-${ev.color}-500/20 transition-colors`}
@@ -127,6 +141,22 @@ export function Calendar() {
                 {ev.title}
               </div>
             ))}
+            {dayTasks.slice(0, 2).map(t => (
+              <div key={t.id} className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20 truncate flex items-center gap-1">
+                <CheckSquare className="w-2.5 h-2.5 shrink-0" />
+                <span className="truncate">{t.title}</span>
+              </div>
+            ))}
+            {dayTasks.length > 2 && (
+              <div className="text-[9px] text-slate-500 font-mono pl-1">+{dayTasks.length - 2} tasks</div>
+            )}
+            {dayHabits.length > 0 && (
+              <div className="flex gap-0.5 mt-1 flex-wrap">
+                {dayHabits.slice(0, 5).map(h => (
+                  <div key={h.id} title={h.name} className={cn("w-2 h-2 rounded-full", h.color)} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       );
@@ -141,6 +171,8 @@ export function Calendar() {
   }
 
   const selectedDayEvents = events.filter(e => isSameDay(e.date, selectedDate));
+  const selectedDayStr = format(selectedDate, "yyyy-MM-dd");
+  const selectedDayTasks = tasks.filter(t => t.dueDate === selectedDayStr && !t.completed);
 
   return (
     <motion.div 
@@ -154,7 +186,7 @@ export function Calendar() {
           <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">Calendar</h1>
           <p className="text-slate-400 text-lg font-light">Schedule and manage your events</p>
         </div>
-        <Button onClick={() => setViewState("add")} className="w-full md:w-auto bg-emerald-500 text-black hover:bg-emerald-400">
+        <Button onClick={() => setViewState("add")} className="w-full md:w-auto bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
           <Plus className="w-5 h-5 mr-2" /> New Event
         </Button>
       </header>
@@ -165,8 +197,8 @@ export function Calendar() {
           <Card className="bg-white/[0.03] border-white/[0.07] overflow-hidden p-0 h-full flex flex-col">
             <CardHeader className="flex flex-row items-center justify-between border-b border-white/[0.07] p-6 bg-white/[0.03]">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                  <CalendarIcon className="w-6 h-6 text-emerald-400" />
+                <div className="w-12 h-12 rounded-2xl bg-[var(--accent-subtle)] flex items-center justify-center border border-[var(--accent-border)]">
+                  <CalendarIcon className="w-6 h-6 text-[var(--accent-400)]" />
                 </div>
                 <CardTitle className="text-3xl font-light tracking-tight text-white">
                   {format(currentDate, "MMMM yyyy")}
@@ -217,31 +249,50 @@ export function Calendar() {
                 {/* LIST VIEW */}
                 {viewState === "list" && (
                   <motion.div key="list" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
-                    {selectedDayEvents.length === 0 ? (
+                    {selectedDayEvents.length === 0 && selectedDayTasks.length === 0 ? (
                       <div className="text-center py-12">
                         <div className="w-16 h-16 rounded-full bg-white/[0.04] border border-white/[0.07] flex items-center justify-center mx-auto mb-4">
                           <CalendarIcon className="w-6 h-6 text-slate-600" />
                         </div>
                         <p className="text-slate-400 font-light">No events scheduled for this day.</p>
-                        <Button variant="ghost" onClick={() => setViewState("add")} className="text-emerald-400 mt-2 hover:bg-emerald-500/10 hover:text-emerald-300">Add an event</Button>
+                        <Button variant="ghost" onClick={() => setViewState("add")} className="text-[var(--accent-400)] mt-2 hover:bg-[var(--accent-subtle)] hover:text-[var(--accent-400)]">Add an event</Button>
                       </div>
                     ) : (
-                      selectedDayEvents.map(ev => (
-                        <div 
-                          key={ev.id}
-                          onClick={() => { setSelectedEvent(ev); setViewState("details"); }}
-                          className="p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors cursor-pointer group flex gap-4"
-                        >
-                          <div className={`w-2 h-full rounded-full bg-${ev.color}-500 shrink-0`} />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-medium truncate group-hover:text-emerald-400 transition-colors">{ev.title}</h4>
-                            <div className="flex items-center gap-2 text-xs text-slate-500 font-mono mt-1">
-                              <Clock className="w-3.5 h-3.5" />
-                              {ev.time}
+                      <>
+                        {selectedDayEvents.map(ev => (
+                          <div
+                            key={ev.id}
+                            onClick={() => { setSelectedEvent(ev); setViewState("details"); }}
+                            className="p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors cursor-pointer group flex gap-4"
+                          >
+                            <div className={`w-2 h-full rounded-full bg-${ev.color}-500 shrink-0`} />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-white font-medium truncate group-hover:text-[var(--accent-400)] transition-colors">{ev.title}</h4>
+                              <div className="flex items-center gap-2 text-xs text-slate-500 font-mono mt-1">
+                                <Clock className="w-3.5 h-3.5" />
+                                {ev.time}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))
+                        ))}
+                        {selectedDayTasks.length > 0 && (
+                          <div className={selectedDayEvents.length > 0 ? "pt-4 border-t border-white/[0.07]" : ""}>
+                            <p className="text-[10px] font-mono uppercase tracking-widest text-slate-500 mb-3">Tasks Due</p>
+                            {selectedDayTasks.map(t => (
+                              <div key={t.id} className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/10 mb-2 flex items-center gap-2">
+                                <CheckSquare className="w-4 h-4 text-blue-400 shrink-0" />
+                                <span className="text-sm text-blue-300 truncate">{t.title}</span>
+                                <span className="text-[10px] font-mono text-slate-500 ml-auto shrink-0">{t.priority}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {selectedDayEvents.length === 0 && (
+                          <Button variant="ghost" onClick={() => setViewState("add")} className="text-[var(--accent-400)] w-full mt-2 hover:bg-[var(--accent-subtle)] hover:text-[var(--accent-400)]">
+                            <Plus className="w-4 h-4 mr-2" /> Add an event
+                          </Button>
+                        )}
+                      </>
                     )}
                   </motion.div>
                 )}
@@ -319,7 +370,7 @@ export function Calendar() {
                           value={newEventDesc}
                           onChange={(e) => setNewEventDesc(e.target.value)}
                           placeholder="Add details..." 
-                          className="w-full min-h-[100px] p-3 rounded-xl bg-white/[0.04] border border-white/[0.07] text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
+                          className="w-full min-h-[100px] p-3 rounded-xl bg-white/[0.04] border border-white/[0.07] text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 resize-none"
                         />
                       </div>
 
@@ -338,7 +389,7 @@ export function Calendar() {
                       </div>
 
                       <div className="pt-6 border-t border-white/[0.07]">
-                        <Button type="submit" className="w-full bg-emerald-500 text-black hover:bg-emerald-400">
+                        <Button type="submit" className="w-full bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
                           Save Event
                         </Button>
                       </div>

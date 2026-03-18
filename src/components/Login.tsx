@@ -59,8 +59,8 @@ export function Login({ onSuccess }: LoginProps) {
       >
         {/* Icon + heading */}
         <div className="flex flex-col items-center mb-10 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
-            <Lock className="w-7 h-7 text-emerald-400" />
+          <div className="w-16 h-16 rounded-2xl bg-[var(--accent-subtle)] border border-[var(--accent-border)] flex items-center justify-center mb-5 shadow-[0_0_40px_rgba(16,185,129,0.1)]">
+            <Lock className="w-7 h-7 text-[var(--accent-400)]" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight text-white mb-1.5">
             Adi Zeljković
@@ -83,7 +83,7 @@ export function Login({ onSuccess }: LoginProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full h-12 px-4 pr-12 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white placeholder:text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/30 transition-all"
+                  className="w-full h-12 px-4 pr-12 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white placeholder:text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/40 focus:border-[var(--accent-border)] transition-all"
                   autoFocus
                   autoComplete="current-password"
                 />
@@ -100,7 +100,7 @@ export function Login({ onSuccess }: LoginProps) {
             <button
               type="submit"
               disabled={isLoading || !password.trim()}
-              className="w-full h-12 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-black font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(16,185,129,0.2)]"
+              className="w-full h-12 rounded-xl bg-[var(--accent-500)] hover:bg-[var(--accent-400)] active:brightness-90 disabled:opacity-40 disabled:cursor-not-allowed text-black font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_0_30px_var(--accent-glow)]"
             >
               {isLoading ? (
                 <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />

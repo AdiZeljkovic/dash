@@ -1,18 +1,136 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Bookmark, Plus, ExternalLink, Trash2, Edit3, Search, X, LayoutDashboard } from "lucide-react";
+import { Bookmark, Plus, ExternalLink, Trash2, Edit3, X, LayoutDashboard, GripVertical } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { api, type BookmarkItem } from "../lib/api";
+import {
+  DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext, sortableKeyboardCoordinates, rectSortingStrategy,
+  useSortable, arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+function SortableBookmarkItem({
+  bm,
+  onEdit,
+  onDelete,
+  onToggleDashboard,
+}: {
+  bm: BookmarkItem;
+  onEdit: (b: BookmarkItem) => void;
+  onDelete: (id: string) => void;
+  onToggleDashboard: (id: string, current: boolean) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: bm.id });
+  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.5 : 1 };
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+    >
+      <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-orange-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col relative">
+        <CardContent className="p-6 flex-1 flex flex-col">
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center gap-2">
+              <button
+                {...listeners}
+                className="text-slate-600 hover:text-slate-400 cursor-grab active:cursor-grabbing touch-none"
+              >
+                <GripVertical className="w-4 h-4" />
+              </button>
+              <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+                <Bookmark className="w-6 h-6 text-orange-400" />
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => onToggleDashboard(bm.id, bm.showOnDashboard)}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  bm.showOnDashboard
+                    ? "bg-[var(--accent-subtle)] text-[var(--accent-400)] hover:bg-[var(--accent-subtle)]"
+                    : "bg-white/[0.05] text-slate-500 hover:text-white hover:bg-white/[0.1]"
+                }`}
+                title={bm.showOnDashboard ? "Remove from Dashboard" : "Pin to Dashboard"}
+              >
+                <LayoutDashboard className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => onEdit(bm)}
+                className="p-2 rounded-lg bg-white/[0.05] text-slate-500 hover:text-white hover:bg-white/[0.1] transition-colors"
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+          <h3 className="font-medium text-xl text-white mb-1 group-hover:text-orange-400 transition-colors line-clamp-1">
+            {bm.title}
+          </h3>
+          <p className="text-sm text-slate-500 font-mono truncate mb-6">
+            {bm.url.replace(/^https?:\/\//, "")}
+          </p>
+          <div className="mt-auto pt-4 border-t border-white/[0.07] flex items-center justify-between">
+            <span className="text-[10px] px-3 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] text-slate-400 uppercase tracking-widest font-mono">
+              {bm.category}
+            </span>
+            <a href={bm.url} target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white group-hover:bg-white/[0.05]">
+                Visit <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </Button>
+            </a>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
 
 export function Bookmarks() {
   const [bookmarks, setBookmarks] = useState<BookmarkItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<string>("all");
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIdx = filteredBookmarks.findIndex(b => b.id === active.id);
+    const newIdx = filteredBookmarks.findIndex(b => b.id === over.id);
+    if (oldIdx === -1 || newIdx === -1) return;
+    const reorderedFiltered = arrayMove(filteredBookmarks, oldIdx, newIdx);
+    const filteredIdSet = new Set(reorderedFiltered.map(b => b.id));
+    let fi = 0;
+    const newBookmarks = bookmarks.map(b => filteredIdSet.has(b.id) ? reorderedFiltered[fi++] : b);
+    localStorage.setItem("bookmark_order", JSON.stringify(newBookmarks.map(b => b.id)));
+    setBookmarks(newBookmarks);
+  };
+
   useEffect(() => {
-    api.bookmarks.getAll().then(setBookmarks).catch(console.error);
+    api.bookmarks.getAll().then(apiBookmarks => {
+      const savedOrder = JSON.parse(localStorage.getItem("bookmark_order") || "[]") as string[];
+      if (savedOrder.length) {
+        const ordered = savedOrder.map(id => apiBookmarks.find(b => b.id === id)).filter(Boolean) as typeof apiBookmarks;
+        const unordered = apiBookmarks.filter(b => !savedOrder.includes(b.id));
+        setBookmarks([...ordered, ...unordered]);
+      } else {
+        setBookmarks(apiBookmarks);
+      }
+    }).catch(console.error);
   }, []);
 
   // Modal state
@@ -133,67 +251,23 @@ export function Bookmarks() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence>
-          {filteredBookmarks.map((bm) => (
-            <motion.div
-              key={bm.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-orange-500/30 hover:bg-white/[0.03] transition-all duration-300 group overflow-hidden flex flex-col relative">
-                <CardContent className="p-6 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
-                      <Bookmark className="w-6 h-6 text-orange-400" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => toggleDashboard(bm.id, bm.showOnDashboard)}
-                        className={`p-2 rounded-lg transition-all duration-300 ${
-                          bm.showOnDashboard 
-                            ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20" 
-                            : "bg-white/[0.05] text-slate-500 hover:text-white hover:bg-white/[0.1]"
-                        }`}
-                        title={bm.showOnDashboard ? "Remove from Dashboard" : "Pin to Dashboard"}
-                      >
-                        <LayoutDashboard className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => openEditModal(bm)}
-                        className="p-2 rounded-lg bg-white/[0.05] text-slate-500 hover:text-white hover:bg-white/[0.1] transition-colors"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <h3 className="font-medium text-xl text-white mb-1 group-hover:text-orange-400 transition-colors line-clamp-1">
-                    {bm.title}
-                  </h3>
-                  <p className="text-sm text-slate-500 font-mono truncate mb-6">
-                    {bm.url.replace(/^https?:\/\//, '')}
-                  </p>
-                  
-                  <div className="mt-auto pt-4 border-t border-white/[0.07] flex items-center justify-between">
-                    <span className="text-[10px] px-3 py-1.5 rounded-full border border-white/[0.1] bg-white/[0.04] text-slate-400 uppercase tracking-widest font-mono">
-                      {bm.category}
-                    </span>
-                    <a href={bm.url} target="_blank" rel="noopener noreferrer">
-                      <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white group-hover:bg-white/[0.05]">
-                        Visit <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                      </Button>
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={filteredBookmarks.map(b => b.id)} strategy={rectSortingStrategy}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {filteredBookmarks.map((bm) => (
+                <SortableBookmarkItem
+                  key={bm.id}
+                  bm={bm}
+                  onEdit={openEditModal}
+                  onDelete={handleDelete}
+                  onToggleDashboard={toggleDashboard}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+        </SortableContext>
+      </DndContext>
 
       {/* Add / Edit Bookmark Modal */}
       <AnimatePresence>
@@ -244,7 +318,7 @@ export function Bookmarks() {
                   <button
                     type="button"
                     onClick={() => setShowOnDashboard(!showOnDashboard)}
-                    className={`w-12 h-6 rounded-full transition-colors relative ${showOnDashboard ? 'bg-emerald-500' : 'bg-white/[0.1]'}`}
+                    className={`w-12 h-6 rounded-full transition-colors relative ${showOnDashboard ? 'bg-[var(--accent-500)]' : 'bg-white/[0.1]'}`}
                   >
                     <motion.div 
                       className="w-4 h-4 bg-white rounded-full absolute top-1"

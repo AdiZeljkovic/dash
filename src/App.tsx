@@ -8,6 +8,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { Toaster } from "react-hot-toast";
 import { Menu } from "lucide-react";
 import { Sidebar, TabType } from "./components/Sidebar";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { CommandPalette } from "./components/CommandPalette";
+import { QuickAdd } from "./components/QuickAdd";
 import { Login } from "./components/Login";
 import { Home } from "./components/Home";
 import { Tasks } from "./components/Tasks";
@@ -18,6 +21,7 @@ import { Budget } from "./components/Budget";
 import { Books } from "./components/Books";
 import { Habits } from "./components/Habits";
 import { Goals } from "./components/Goals";
+import { Analytics } from "./components/Analytics";
 import { News } from "./components/News";
 import { YouTube } from "./components/YouTube";
 import { Bookmarks } from "./components/Bookmarks";
@@ -28,6 +32,26 @@ export default function App() {
   const [activeTab,   setActiveTab]   = useState<TabType>("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [authState,   setAuthState]   = useState<AuthState>("loading");
+  const [accent,      setAccent]      = useState<string>(() => localStorage.getItem("dashboard_accent_color") || "emerald");
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const goOnline = () => setIsOffline(false);
+    const goOffline = () => setIsOffline(true);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
+
+  useKeyboardShortcuts({
+    activeTab,
+    setActiveTab,
+    openCommandPalette: () => setCommandPaletteOpen(true),
+  });
 
   // Verify token on mount
   useEffect(() => {
@@ -74,7 +98,7 @@ export default function App() {
           animate={{ opacity: 1 }}
           className="flex flex-col items-center gap-4"
         >
-          <div className="w-8 h-8 border-2 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-white/10 border-t-white/50 rounded-full animate-spin" />
           <p className="text-slate-600 text-sm font-mono">Učitavanje...</p>
         </motion.div>
       </div>
@@ -106,7 +130,7 @@ export default function App() {
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#080c18] text-slate-300 font-sans selection:bg-emerald-500/30">
+    <div data-accent={accent} className="flex h-screen w-full overflow-hidden bg-[#080c18] text-slate-300 font-sans">
       {/* Mobile backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -122,9 +146,27 @@ export default function App() {
         setActiveTab={handleTabChange}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        accent={accent}
+        setAccent={setAccent}
       />
 
       <main className="flex-1 h-full overflow-y-auto relative z-10 flex flex-col">
+        {/* Offline banner */}
+        <AnimatePresence>
+          {isOffline && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden shrink-0"
+            >
+              <div className="bg-orange-500/10 border-b border-orange-500/20 px-4 py-2 text-center text-xs font-mono text-orange-400 tracking-widest uppercase">
+                You are offline — showing cached data
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Mobile top bar */}
         <div className="md:hidden sticky top-0 z-20 px-4 py-3 border-b border-white/[0.07] bg-[#080c18]/90 backdrop-blur-sm flex items-center gap-3 shrink-0">
           <button
@@ -148,11 +190,19 @@ export default function App() {
             {activeTab === "bookmarks" && <Bookmarks key="bookmarks" />}
             {activeTab === "habits"    && <Habits    key="habits"    />}
             {activeTab === "goals"     && <Goals     key="goals"     />}
+            {activeTab === "analytics" && <Analytics key="analytics" />}
             {activeTab === "news"      && <News      key="news"      />}
             {activeTab === "youtube"   && <YouTube   key="youtube"   />}
           </AnimatePresence>
         </div>
       </main>
+
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        onNavigate={handleTabChange}
+      />
+      <QuickAdd />
 
       <Toaster
         position="bottom-right"
@@ -165,7 +215,7 @@ export default function App() {
             fontFamily: "inherit",
             fontSize: "14px",
           },
-          success: { iconTheme: { primary: "#10b981", secondary: "#0d1124" } },
+          success: { iconTheme: { primary: "var(--accent-500,#10b981)", secondary: "#0d1124" } },
           error:   { iconTheme: { primary: "#ef4444", secondary: "#0d1124" } },
         }}
       />

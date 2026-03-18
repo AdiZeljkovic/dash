@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Target, Plus, CheckCircle2, ArrowRight, Flag, X, Trash2 } from "lucide-react";
+import { Target, Plus, CheckCircle2, ArrowRight, Flag, X, Trash2, GripVertical } from "lucide-react";
+import {
+  DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext, sortableKeyboardCoordinates, rectSortingStrategy,
+  useSortable, arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -10,18 +19,139 @@ type GoalColor = "emerald" | "orange" | "blue" | "purple" | "pink";
 type GoalStatus = "on-track" | "at-risk" | "completed";
 
 const COLOR_MAP: Record<GoalColor, { bg: string, text: string, border: string, lightBg: string, shadow: string }> = {
-  emerald: { bg: "bg-emerald-500", text: "text-emerald-400", border: "border-emerald-500/20", lightBg: "bg-emerald-500/10", shadow: "shadow-[0_0_10px_rgba(16,185,129,0.5)]" },
+  emerald: { bg: "bg-emerald-500", text: "text-emerald-400", border: "border-[var(--accent-border)]", lightBg: "bg-[var(--accent-subtle)]", shadow: "shadow-[0_0_10px_var(--accent-glow)]" },
   orange: { bg: "bg-orange-500", text: "text-orange-400", border: "border-orange-500/20", lightBg: "bg-orange-500/10", shadow: "shadow-[0_0_10px_rgba(249,115,22,0.5)]" },
   blue: { bg: "bg-blue-500", text: "text-blue-400", border: "border-blue-500/20", lightBg: "bg-blue-500/10", shadow: "shadow-[0_0_10px_rgba(59,130,246,0.5)]" },
   purple: { bg: "bg-purple-500", text: "text-purple-400", border: "border-purple-500/20", lightBg: "bg-purple-500/10", shadow: "shadow-[0_0_10px_rgba(168,85,247,0.5)]" },
   pink: { bg: "bg-pink-500", text: "text-pink-400", border: "border-pink-500/20", lightBg: "bg-pink-500/10", shadow: "shadow-[0_0_10px_rgba(236,72,153,0.5)]" },
 };
 
+function SortableGoalItem({
+  goal,
+  onEdit,
+}: {
+  goal: Goal;
+  onEdit: (goal: Goal) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: goal.id });
+  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.5 : 1 };
+  const theme = COLOR_MAP[goal.color];
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+    >
+      <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all duration-300 group flex flex-col relative overflow-hidden">
+        <div className={`absolute top-0 left-0 w-1 h-full ${theme.bg} opacity-50 group-hover:opacity-100 transition-opacity`} />
+        <CardHeader className="pb-4">
+          <div className="flex items-start justify-between">
+            <div className="pr-4 flex items-start gap-2">
+              <button
+                {...listeners}
+                className="text-slate-600 hover:text-slate-400 cursor-grab active:cursor-grabbing touch-none mt-1 shrink-0"
+              >
+                <GripVertical className="w-4 h-4" />
+              </button>
+              <div>
+                <CardTitle className="text-2xl font-medium text-white mb-2">{goal.title}</CardTitle>
+                <p className="text-sm text-slate-400 line-clamp-2 font-light leading-relaxed">{goal.description}</p>
+              </div>
+            </div>
+            <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center ${theme.lightBg} border ${theme.border}`}>
+              {goal.status === "completed" ? (
+                <CheckCircle2 className={`w-6 h-6 ${theme.text}`} />
+              ) : (
+                <Target className={`w-6 h-6 ${theme.text}`} />
+              )}
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="flex-1 flex flex-col justify-end">
+          <div className="space-y-5">
+            <div className="flex items-center justify-between text-sm font-mono">
+              <span className="text-slate-500 flex items-center gap-2 uppercase tracking-widest">
+                <Flag className="w-4 h-4" /> {goal.targetDate}
+              </span>
+              <span className={`text-lg tracking-tight ${
+                goal.status === "completed" ? theme.text :
+                goal.status === "at-risk" ? "text-orange-400" :
+                "text-[var(--accent-400)]"
+              }`}>
+                {goal.progress}%
+              </span>
+            </div>
+            <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
+              <motion.div
+                className={`h-full ${theme.bg} rounded-full ${theme.shadow}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${goal.progress}%` }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
+            <div className="pt-5 border-t border-white/[0.07] flex items-center justify-between">
+              <span className={`text-[10px] px-3 py-1.5 rounded-full border uppercase tracking-widest font-mono ${
+                goal.status === "completed" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" :
+                goal.status === "at-risk" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" :
+                "bg-[var(--accent-subtle)] text-[var(--accent-400)] border-[var(--accent-border)]"
+              }`}>
+                {goal.status.replace("-", " ")}
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onEdit(goal)}
+                className="text-slate-400 hover:text-white group-hover:bg-white/[0.05]"
+              >
+                Update <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 export function Goals() {
   const [goals, setGoals] = useState<Goal[]>([]);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIdx = filteredGoals.findIndex(g => g.id === active.id);
+    const newIdx = filteredGoals.findIndex(g => g.id === over.id);
+    if (oldIdx === -1 || newIdx === -1) return;
+    const reorderedFiltered = arrayMove(filteredGoals, oldIdx, newIdx);
+    const filteredIdSet = new Set(reorderedFiltered.map(g => g.id));
+    let fi = 0;
+    const newGoals = goals.map(g => filteredIdSet.has(g.id) ? reorderedFiltered[fi++] : g);
+    localStorage.setItem("goal_order", JSON.stringify(newGoals.map(g => g.id)));
+    setGoals(newGoals);
+  };
+
   useEffect(() => {
-    api.goals.getAll().then(setGoals).catch(console.error);
+    api.goals.getAll().then(apiGoals => {
+      const savedOrder = JSON.parse(localStorage.getItem("goal_order") || "[]") as string[];
+      if (savedOrder.length) {
+        const ordered = savedOrder.map(id => apiGoals.find(g => g.id === id)).filter(Boolean) as typeof apiGoals;
+        const unordered = apiGoals.filter(g => !savedOrder.includes(g.id));
+        setGoals([...ordered, ...unordered]);
+      } else {
+        setGoals(apiGoals);
+      }
+    }).catch(console.error);
   }, []);
 
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
@@ -106,7 +236,7 @@ export function Goals() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]"
           />
-          <Button onClick={openAddModal} className="bg-emerald-500 text-black hover:bg-emerald-400">
+          <Button onClick={openAddModal} className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
             <Plus className="w-5 h-5 mr-2" /> New Goal
           </Button>
         </div>
@@ -119,7 +249,7 @@ export function Goals() {
             onClick={() => setFilter(f)}
             className={`px-6 py-2.5 rounded-full text-sm font-mono tracking-widest uppercase transition-all duration-300 whitespace-nowrap ${
               filter === f 
-                ? "bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.3)]" 
+                ? "bg-[var(--accent-500)] text-black shadow-[0_0_20px_var(--accent-glow)]"
                 : "bg-white/[0.04] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.07]"
             }`}
           >
@@ -128,85 +258,17 @@ export function Goals() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AnimatePresence>
-          {filteredGoals.map((goal) => {
-            const theme = COLOR_MAP[goal.color];
-            return (
-              <motion.div
-                key={goal.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Card className="h-full bg-white/[0.03] border-white/[0.07] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all duration-300 group flex flex-col relative overflow-hidden">
-                  <div className={`absolute top-0 left-0 w-1 h-full ${theme.bg} opacity-50 group-hover:opacity-100 transition-opacity`} />
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start justify-between">
-                      <div className="pr-4">
-                        <CardTitle className="text-2xl font-medium text-white mb-2">{goal.title}</CardTitle>
-                        <p className="text-sm text-slate-400 line-clamp-2 font-light leading-relaxed">{goal.description}</p>
-                      </div>
-                      <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center ${theme.lightBg} border ${theme.border}`}>
-                        {goal.status === "completed" ? (
-                          <CheckCircle2 className={`w-6 h-6 ${theme.text}`} />
-                        ) : (
-                          <Target className={`w-6 h-6 ${theme.text}`} />
-                        )}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-1 flex flex-col justify-end">
-                    <div className="space-y-5">
-                      <div className="flex items-center justify-between text-sm font-mono">
-                        <span className="text-slate-500 flex items-center gap-2 uppercase tracking-widest">
-                          <Flag className="w-4 h-4" /> {goal.targetDate}
-                        </span>
-                        <span className={`text-lg tracking-tight ${
-                          goal.status === "completed" ? theme.text :
-                          goal.status === "at-risk" ? "text-orange-400" :
-                          "text-emerald-400"
-                        }`}>
-                          {goal.progress}%
-                        </span>
-                      </div>
-                      
-                      <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
-                        <motion.div 
-                          className={`h-full ${theme.bg} rounded-full ${theme.shadow}`}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${goal.progress}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                        />
-                      </div>
-                      
-                      <div className="pt-5 border-t border-white/[0.07] flex items-center justify-between">
-                        <span className={`text-[10px] px-3 py-1.5 rounded-full border uppercase tracking-widest font-mono ${
-                          goal.status === "completed" ? "bg-purple-500/10 text-purple-400 border-purple-500/20" :
-                          goal.status === "at-risk" ? "bg-orange-500/10 text-orange-400 border-orange-500/20" :
-                          "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                        }`}>
-                          {goal.status.replace("-", " ")}
-                        </span>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => openEditModal(goal)}
-                          className="text-slate-400 hover:text-white group-hover:bg-white/[0.05]"
-                        >
-                          Update <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={filteredGoals.map(g => g.id)} strategy={rectSortingStrategy}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AnimatePresence>
+              {filteredGoals.map((goal) => (
+                <SortableGoalItem key={goal.id} goal={goal} onEdit={openEditModal} />
+              ))}
+            </AnimatePresence>
+          </div>
+        </SortableContext>
+      </DndContext>
 
       {/* Add / Edit Goal Modal */}
       <AnimatePresence>
@@ -221,7 +283,7 @@ export function Goals() {
             >
               <div className="p-6 border-b border-white/[0.07] flex items-center justify-between">
                 <h3 className="text-xl font-medium text-white flex items-center gap-2">
-                  <Target className="w-5 h-5 text-emerald-400" /> 
+                  <Target className="w-5 h-5 text-[var(--accent-400)]" />
                   {selectedGoal ? "Update Goal" : "New Goal"}
                 </h3>
                 <button onClick={() => { setIsAddModalOpen(false); setSelectedGoal(null); }} className="text-slate-400 hover:text-white">
@@ -241,7 +303,7 @@ export function Goals() {
                   <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Description</label>
                   <textarea 
                     value={description} onChange={(e) => setDescription(e.target.value)}
-                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-3 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none min-h-[80px]"
+                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl p-3 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 resize-none min-h-[80px]"
                     placeholder="Brief description..."
                   />
                 </div>
@@ -258,7 +320,7 @@ export function Goals() {
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Status</label>
                     <select 
                       value={status} onChange={(e) => setStatus(e.target.value as GoalStatus)}
-                      className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
+                      className="w-full h-10 px-3 rounded-md bg-white/[0.04] border border-white/[0.07] text-sm text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-500)]/50 appearance-none"
                     >
                       <option value="on-track" className="bg-[#0d1124]">On Track</option>
                       <option value="at-risk" className="bg-[#0d1124]">At Risk</option>
@@ -270,12 +332,12 @@ export function Goals() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Progress</label>
-                    <span className="text-xs font-mono text-emerald-400">{progress}%</span>
+                    <span className="text-xs font-mono text-[var(--accent-400)]">{progress}%</span>
                   </div>
-                  <input 
-                    type="range" min="0" max="100" 
+                  <input
+                    type="range" min="0" max="100"
                     value={progress} onChange={(e) => setProgress(parseInt(e.target.value))}
-                    className="w-full accent-emerald-500"
+                    className="w-full"
                   />
                 </div>
 
@@ -308,7 +370,7 @@ export function Goals() {
                     <Button type="button" variant="outline" onClick={() => { setIsAddModalOpen(false); setSelectedGoal(null); }} className="border-white/[0.1] text-slate-300 hover:bg-white/[0.05]">
                       Cancel
                     </Button>
-                    <Button type="submit" className="bg-emerald-500 text-black hover:bg-emerald-400">
+                    <Button type="submit" className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
                       {selectedGoal ? "Save Changes" : "Create Goal"}
                     </Button>
                   </div>

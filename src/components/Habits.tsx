@@ -6,6 +6,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { startOfWeek, addDays, format, isToday, isFuture } from "date-fns";
 import { api, type Habit } from "../lib/api";
+import toast from "react-hot-toast";
+import { useConfetti } from "../hooks/useConfetti";
 
 const COLORS = [
   "bg-blue-500", "bg-purple-500", "bg-orange-500",
@@ -15,9 +17,12 @@ const COLORS = [
 const todayStr = format(new Date(), 'yyyy-MM-dd');
 const yesterdayStr = format(addDays(new Date(), -1), 'yyyy-MM-dd');
 
+const STREAK_MILESTONES = [7, 14, 21, 30, 60, 100];
+
 export function Habits() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState("");
+  const { burst } = useConfetti();
 
   useEffect(() => {
     api.habits.getAll().then(setHabits).catch(console.error);
@@ -32,17 +37,26 @@ export function Habits() {
     if (isFuture(date)) return;
 
     const dateStr = format(date, 'yyyy-MM-dd');
+    const habit = habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    const wasCompleted = habit.completedDates.includes(dateStr);
     await api.habits.toggle(habitId, dateStr);
-    setHabits(habits.map(h => {
-      if (h.id === habitId) {
-        const isCompleted = h.completedDates.includes(dateStr);
-        const newDates = isCompleted
-          ? h.completedDates.filter(d => d !== dateStr)
-          : [...h.completedDates, dateStr];
-        return { ...h, completedDates: newDates };
+
+    const newDates = wasCompleted
+      ? habit.completedDates.filter(d => d !== dateStr)
+      : [...habit.completedDates, dateStr];
+
+    setHabits(habits.map(h => h.id === habitId ? { ...h, completedDates: newDates } : h));
+
+    // Celebrate streak milestones when marking complete (not uncomplete)
+    if (!wasCompleted) {
+      const newStreak = calculateStreak(newDates);
+      if (STREAK_MILESTONES.includes(newStreak)) {
+        burst();
+        toast.success(`${newStreak}-day streak on "${habit.name}"! 🔥`, { duration: 5000 });
       }
-      return h;
-    }));
+    }
   };
 
   const addHabit = async (e: React.FormEvent) => {
@@ -103,7 +117,7 @@ export function Habits() {
             placeholder="New habit..." 
             className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]" 
           />
-          <Button type="submit" className="bg-emerald-500 text-black hover:bg-emerald-400">
+          <Button type="submit" className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]">
             <Plus className="w-5 h-5 mr-2" /> Add
           </Button>
         </form>

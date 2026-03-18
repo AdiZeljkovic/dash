@@ -2,49 +2,58 @@ import React from "react";
 import { cn } from "../lib/utils";
 import {
   Home, CheckSquare, Briefcase, Calendar, FileText,
-  Wallet, BookOpen, Activity, Target, Newspaper, Youtube, Bookmark, X
+  Wallet, BookOpen, Activity, Target, Newspaper, Youtube, Bookmark, X, BarChart2
 } from "lucide-react";
 import { motion } from "motion/react";
 
 export type TabType =
   | "home" | "tasks" | "crm" | "calendar" | "notes"
-  | "budget" | "books" | "habits" | "goals" | "news" | "youtube" | "bookmarks";
+  | "budget" | "books" | "habits" | "goals" | "analytics" | "news" | "youtube" | "bookmarks";
 
 interface SidebarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   isOpen: boolean;
   onClose: () => void;
+  accent: string;
+  setAccent: (color: string) => void;
 }
 
 const navItems: { id: TabType; label: string; icon: React.ElementType }[] = [
-  { id: "home", label: "Dashboard", icon: Home },
-  { id: "tasks", label: "Tasks", icon: CheckSquare },
-  { id: "crm", label: "CRM", icon: Briefcase },
-  { id: "calendar", label: "Calendar", icon: Calendar },
-  { id: "notes", label: "Notes", icon: FileText },
-  { id: "budget", label: "Budget", icon: Wallet },
-  { id: "books", label: "Books", icon: BookOpen },
+  { id: "home",      label: "Dashboard", icon: Home },
+  { id: "tasks",     label: "Tasks",     icon: CheckSquare },
+  { id: "crm",       label: "CRM",       icon: Briefcase },
+  { id: "calendar",  label: "Calendar",  icon: Calendar },
+  { id: "notes",     label: "Notes",     icon: FileText },
+  { id: "budget",    label: "Budget",    icon: Wallet },
+  { id: "books",     label: "Books",     icon: BookOpen },
   { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
-  { id: "habits", label: "Habits", icon: Activity },
-  { id: "goals", label: "Goals", icon: Target },
-  { id: "news", label: "News", icon: Newspaper },
-  { id: "youtube", label: "YouTube", icon: Youtube },
+  { id: "habits",    label: "Habits",    icon: Activity },
+  { id: "goals",     label: "Goals",     icon: Target },
+  { id: "analytics", label: "Analytics", icon: BarChart2 },
+  { id: "news",      label: "News",      icon: Newspaper },
+  { id: "youtube",   label: "YouTube",   icon: Youtube },
 ];
 
-export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarProps) {
+const ACCENT_COLORS = [
+  { id: "emerald", cls: "bg-emerald-500" },
+  { id: "blue",    cls: "bg-blue-500" },
+  { id: "violet",  cls: "bg-violet-500" },
+  { id: "orange",  cls: "bg-orange-500" },
+  { id: "rose",    cls: "bg-rose-500" },
+];
+
+export function Sidebar({ activeTab, setActiveTab, isOpen, onClose, accent, setAccent }: SidebarProps) {
   return (
     <aside
       className={cn(
         "w-[280px] h-screen flex-shrink-0 border-r border-white/[0.07] bg-[#060910] flex flex-col z-40",
-        // On mobile: fixed position, slide in/out
         "fixed md:relative transition-transform duration-300 ease-in-out",
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}
     >
-      <div className="p-8 flex items-center justify-between">
+      <div className="p-8 flex items-center justify-between shrink-0">
         <h1 className="font-semibold text-2xl tracking-tight text-white">Adi Zeljković</h1>
-        {/* Close button — mobile only */}
         <button
           onClick={onClose}
           className="md:hidden p-2 rounded-xl text-slate-500 hover:text-white hover:bg-white/[0.05] transition-colors"
@@ -53,7 +62,7 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
         </button>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto pb-6 scrollbar-hide">
+      <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto pb-4 scrollbar-hide">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -78,17 +87,44 @@ export function Sidebar({ activeTab, setActiveTab, isOpen, onClose }: SidebarPro
               {isActive && (
                 <motion.div
                   layoutId="active-nav-indicator"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-emerald-500 rounded-r-full shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full"
+                  style={{ background: "var(--accent-500)", boxShadow: "0 0 10px var(--accent-glow)" }}
                   initial={false}
                   transition={{ type: "spring", stiffness: 400, damping: 35 }}
                 />
               )}
-              <Icon className={cn("w-5 h-5 relative z-10 transition-colors duration-300", isActive ? "text-emerald-400" : "text-slate-600 group-hover:text-slate-400")} />
+              <Icon
+                className={cn("w-5 h-5 relative z-10 transition-colors duration-300", isActive ? "" : "text-slate-600 group-hover:text-slate-400")}
+                style={isActive ? { color: "var(--accent-400)" } : undefined}
+              />
               <span className="relative z-10 tracking-wide">{item.label}</span>
             </button>
           );
         })}
       </nav>
+
+      {/* Accent color picker */}
+      <div className="px-4 pb-6 pt-4 border-t border-white/[0.07] shrink-0">
+        <p className="text-[10px] font-mono uppercase tracking-widest text-slate-600 mb-3">Accent Color</p>
+        <div className="flex gap-2">
+          {ACCENT_COLORS.map(({ id, cls }) => (
+            <button
+              key={id}
+              onClick={() => {
+                setAccent(id);
+                localStorage.setItem("dashboard_accent_color", id);
+              }}
+              className={cn(
+                `w-6 h-6 rounded-full ${cls} transition-all duration-200`,
+                accent === id
+                  ? "ring-2 ring-white ring-offset-2 ring-offset-[#060910] scale-110"
+                  : "opacity-40 hover:opacity-80"
+              )}
+              title={id}
+            />
+          ))}
+        </div>
+      </div>
     </aside>
   );
 }
