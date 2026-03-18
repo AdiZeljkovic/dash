@@ -41,9 +41,9 @@ export function CRM() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
-        className="p-8 max-w-7xl mx-auto space-y-8"
+        className="p-4 md:p-8 max-w-7xl mx-auto space-y-8"
       >
-        <button 
+        <button
           onClick={() => setSelectedClientId(null)}
           className="flex items-center text-slate-400 hover:text-white transition-colors group text-sm font-mono uppercase tracking-widest"
         >
@@ -51,7 +51,7 @@ export function CRM() {
           Back to Clients
         </button>
 
-        <header className="flex flex-col md:flex-row md:items-start justify-between gap-6 bg-white/[0.01] border border-white/[0.05] p-8 rounded-3xl relative overflow-hidden">
+        <header className="flex flex-col md:flex-row md:items-start justify-between gap-6 bg-white/[0.01] border border-white/[0.05] p-4 md:p-8 rounded-3xl relative overflow-hidden">
           <div className={`absolute top-0 left-0 w-1 h-full ${
             selectedClient.status === 'Active' ? 'bg-emerald-500' :
             selectedClient.status === 'Pending' ? 'bg-yellow-500' :
@@ -64,7 +64,7 @@ export function CRM() {
             </div>
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-4xl font-semibold tracking-tighter text-white">{selectedClient.name}</h1>
+                <h1 className="text-2xl md:text-4xl font-semibold tracking-tighter text-white">{selectedClient.name}</h1>
                 <span className={`px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase border ${
                   selectedClient.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                   selectedClient.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
@@ -269,15 +269,15 @@ export function CRM() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-7xl mx-auto space-y-8"
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8"
     >
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">CRM</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">CRM</h1>
           <p className="text-slate-400 text-lg font-light">Manage your client relationships</p>
         </div>
         <div className="flex items-center gap-3">
-          <Input placeholder="Search clients..." className="w-64 bg-white/[0.02] border-white/[0.05]" />
+          <Input placeholder="Search clients..." className="w-full md:w-64 bg-white/[0.02] border-white/[0.05]" />
           <Button className="bg-emerald-500 text-black hover:bg-emerald-400"><Plus className="w-4 h-4 mr-2" /> Add Client</Button>
         </div>
       </header>

@@ -97,11 +97,11 @@ export function Tasks() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-6xl mx-auto space-y-8"
+      className="p-4 md:p-8 max-w-6xl mx-auto space-y-8"
     >
       <header className="flex flex-col gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">Tasks</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Tasks</h1>
           <p className="text-slate-400 text-lg font-light">Manage your daily priorities</p>
         </div>
 
@@ -137,7 +137,7 @@ export function Tasks() {
               type="date"
               value={newDueDate}
               onChange={e => setNewDueDate(e.target.value)}
-              className="w-40 bg-white/[0.02] border-white/[0.05] font-mono text-sm text-slate-400"
+              className="w-full sm:w-40 bg-white/[0.02] border-white/[0.05] font-mono text-sm text-slate-400"
               title="Due date (optional)"
             />
           </div>
@@ -205,7 +205,7 @@ export function Tasks() {
             </CardHeader>
             <CardContent className="relative z-10">
               <div className="flex items-end gap-2 mb-4">
-                <span className="text-7xl font-light text-white tracking-tighter">
+                <span className="text-5xl md:text-7xl font-light text-white tracking-tighter">
                   {tasks.length > 0 ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100) : 0}<span className="text-4xl">%</span>
                 </span>
                 <span className="text-emerald-400/60 mb-3 font-mono text-sm uppercase tracking-wider">completed</span>

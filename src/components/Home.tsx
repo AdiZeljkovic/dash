@@ -121,11 +121,11 @@ export function Home() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-7xl mx-auto space-y-8 relative"
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 relative"
     >
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">{greeting}, Adi.</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">{greeting}, Adi.</h1>
           <p className="text-slate-400 text-lg font-light">{format(time, "EEEE, MMMM do, yyyy")}</p>
         </div>
         <form onSubmit={handleSearch} className="relative w-full md:w-96">

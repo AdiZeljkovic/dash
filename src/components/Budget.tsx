@@ -102,11 +102,11 @@ export function Budget() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-7xl mx-auto space-y-8 relative"
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 relative"
     >
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">House Budget</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">House Budget</h1>
           <p className="text-slate-400 text-lg font-light">Track your income and expenses</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -129,7 +129,7 @@ export function Budget() {
             <CardTitle className="text-indigo-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><Wallet className="w-4 h-4" /> Total Balance</CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-5xl font-light text-white tracking-tighter mb-2">KM {balance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className="text-3xl md:text-5xl font-light text-white tracking-tighter mb-2">KM {balance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </CardContent>
         </Card>
 
@@ -139,7 +139,7 @@ export function Budget() {
             <CardTitle className="text-emerald-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingUp className="w-4 h-4" /> Total Income</CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-5xl font-light text-white tracking-tighter mb-2">KM {totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className="text-3xl md:text-5xl font-light text-white tracking-tighter mb-2">KM {totalIncome.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </CardContent>
         </Card>
 
@@ -149,7 +149,7 @@ export function Budget() {
             <CardTitle className="text-red-400/80 text-sm font-mono flex items-center gap-2 uppercase tracking-widest"><TrendingDown className="w-4 h-4" /> Total Expenses</CardTitle>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-5xl font-light text-white tracking-tighter mb-2">KM {totalExpense.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className="text-3xl md:text-5xl font-light text-white tracking-tighter mb-2">KM {totalExpense.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           </CardContent>
         </Card>
       </div>
@@ -163,7 +163,7 @@ export function Budget() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[350px] w-full">
+            <div className="h-[220px] md:h-[350px] w-full">
               {chartData.length === 0 ? (
                 <div className="h-full flex items-center justify-center text-slate-500 font-light">
                   Add transactions to see the chart.

@@ -93,11 +93,11 @@ export function Books() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-7xl mx-auto space-y-8 relative"
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 relative"
     >
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">Library</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Library</h1>
           <p className="text-slate-400 text-lg font-light">Track your reading journey</p>
         </div>
         <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ export function Books() {
               placeholder="Search books..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64 pl-9 bg-white/[0.02] border-white/[0.05]" 
+              className="w-full md:w-64 pl-9 bg-white/[0.02] border-white/[0.05]"
             />
           </div>
           <Button onClick={() => setIsAddModalOpen(true)} className="bg-emerald-500 text-black hover:bg-emerald-400">
@@ -132,7 +132,7 @@ export function Books() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <AnimatePresence>
           {filteredBooks.map((book) => (
             <motion.div

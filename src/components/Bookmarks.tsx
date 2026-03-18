@@ -95,11 +95,11 @@ export function Bookmarks() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="p-8 max-w-7xl mx-auto space-y-8 relative"
+      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 relative"
     >
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2 flex items-center gap-3">
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2 flex items-center gap-3">
             <Bookmark className="w-10 h-10 text-orange-500" /> Bookmarks
           </h1>
           <p className="text-slate-400 text-lg font-light">Manage and organize your favorite links</p>
@@ -109,7 +109,7 @@ export function Bookmarks() {
             placeholder="Search bookmarks..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64 bg-white/[0.02] border-white/[0.05]" 
+            className="w-full md:w-64 bg-white/[0.02] border-white/[0.05]"
           />
           <Button onClick={openAddModal} className="bg-orange-500 text-white hover:bg-orange-600">
             <Plus className="w-5 h-5 mr-2" /> New Bookmark

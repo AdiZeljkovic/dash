@@ -71,7 +71,7 @@ export function Notes() {
 
   if (viewState === "new" || viewState === "edit") {
     return (
-      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="p-8 max-w-4xl mx-auto space-y-8">
+      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="p-4 md:p-8 max-w-4xl mx-auto space-y-8">
         <button onClick={() => setViewState("list")} className="flex items-center text-slate-400 hover:text-white transition-colors group text-sm font-mono uppercase tracking-widest">
           <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Notes
         </button>
@@ -115,7 +115,7 @@ export function Notes() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-mono uppercase tracking-widest text-slate-500">Content</label>
-              <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Start typing your note here..." className="w-full min-h-[300px] p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] text-base text-slate-300 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y font-light leading-relaxed" />
+              <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Start typing your note here..." className="w-full min-h-[200px] md:min-h-[300px] p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] text-base text-slate-300 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y font-light leading-relaxed" />
             </div>
           </CardContent>
         </Card>
@@ -124,10 +124,10 @@ export function Notes() {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="p-8 max-w-7xl mx-auto space-y-8">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-5xl font-semibold tracking-tighter text-white mb-2">Notes</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Notes</h1>
           <p className="text-slate-400 text-lg font-light">Capture your thoughts and ideas</p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
