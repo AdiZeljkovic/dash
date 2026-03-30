@@ -5,6 +5,35 @@ import Parser from 'rss-parser';
 const router = Router();
 const rssParser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'Mozilla/5.0 Dashboard/1.0' } });
 
+const RSS_PATHS = ['/rss', '/feed', '/rss.xml', '/feed.xml', '/atom.xml', '/rss/index.xml', '/index.xml', '/news/rss', '/feeds/posts/default'];
+
+// Cache resolved RSS URLs so we don't rediscover on every request
+const rssUrlCache = new Map<string, string>();
+
+async function fetchRssWithFallback(url: string) {
+  const cached = rssUrlCache.get(url);
+  if (cached) return rssParser.parseURL(cached);
+
+  // Try the URL as-is first
+  try {
+    const feed = await rssParser.parseURL(url);
+    rssUrlCache.set(url, url);
+    return feed;
+  } catch {}
+
+  // Then try common RSS paths on the same origin
+  const origin = new URL(url).origin;
+  for (const path of RSS_PATHS) {
+    const candidate = origin + path;
+    try {
+      const feed = await rssParser.parseURL(candidate);
+      rssUrlCache.set(url, candidate); // remember the working URL
+      return feed;
+    } catch {}
+  }
+  throw new Error(`No RSS feed found for ${url}`);
+}
+
 router.get('/', async (_req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM news_sources ORDER BY created_at ASC');
@@ -22,7 +51,7 @@ router.get('/feed', async (_req, res) => {
 
     const results = await Promise.allSettled(
       rows.map(async (source) => {
-        const feed = await rssParser.parseURL(source.url);
+        const feed = await fetchRssWithFallback(source.url);
         return (feed.items || []).slice(0, 10).map((item, i) => ({
           id: `${source.id}-${i}-${Date.now()}`,
           title: item.title || 'Untitled',
