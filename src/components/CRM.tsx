@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Users, Phone, Mail, MoreHorizontal, ArrowUpRight, ArrowDownRight,
+  Users, Phone, Mail, MoreHorizontal,
   ChevronLeft, FileText, MessageSquare, Plus, Calendar as CalendarIcon,
   Download, CheckCircle2, Clock, AlertCircle, Building2, MapPin, Send
 } from "lucide-react";
@@ -16,12 +16,26 @@ export function CRM() {
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "communications" | "invoices" | "documents">("overview");
   const [newComm, setNewComm] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     api.crm.getAll().then(setClients).catch(console.error);
   }, []);
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
+
+  const parseValue = (v: string) => parseFloat(v.replace(/[^0-9.]/g, "")) || 0;
+  const totalRevenue = clients.reduce((sum, c) => sum + parseValue(c.value), 0);
+  const activeCount  = clients.filter(c => c.status === "Active").length;
+  const pendingCount = clients.filter(c => c.status === "Pending").length;
+
+  const filteredClients = search.trim()
+    ? clients.filter(c =>
+        c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.contact.toLowerCase().includes(search.toLowerCase()) ||
+        c.company.toLowerCase().includes(search.toLowerCase())
+      )
+    : clients;
 
   const handleAddCommunication = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -277,7 +291,12 @@ export function CRM() {
           <p className="text-slate-400 text-lg font-light">Manage your client relationships</p>
         </div>
         <div className="flex items-center gap-3">
-          <Input placeholder="Search clients..." className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]" />
+          <Input
+            placeholder="Search clients..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full md:w-64 bg-white/[0.04] border-white/[0.07]"
+          />
           <Button className="bg-[var(--accent-500)] text-black hover:bg-[var(--accent-400)]"><Plus className="w-4 h-4 mr-2" /> Add Client</Button>
         </div>
       </header>
@@ -290,9 +309,8 @@ export function CRM() {
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-light text-white tracking-tighter">KM 48,700</span>
-              <span className="flex items-center text-[var(--accent-400)] text-sm mb-2 font-mono">
-                <ArrowUpRight className="w-4 h-4 mr-1" /> +12%
+              <span className="text-5xl font-light text-white tracking-tighter">
+                KM {totalRevenue.toLocaleString("bs-BA", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
               </span>
             </div>
           </CardContent>
@@ -305,10 +323,7 @@ export function CRM() {
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-light text-white tracking-tighter">24</span>
-              <span className="flex items-center text-blue-400 text-sm mb-2 font-mono">
-                <ArrowUpRight className="w-4 h-4 mr-1" /> +3
-              </span>
+              <span className="text-5xl font-light text-white tracking-tighter">{activeCount}</span>
             </div>
           </CardContent>
         </Card>
@@ -320,10 +335,7 @@ export function CRM() {
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="flex items-end gap-3">
-              <span className="text-5xl font-light text-white tracking-tighter">7</span>
-              <span className="flex items-center text-orange-400 text-sm mb-2 font-mono">
-                <ArrowDownRight className="w-4 h-4 mr-1" /> -2
-              </span>
+              <span className="text-5xl font-light text-white tracking-tighter">{pendingCount}</span>
             </div>
           </CardContent>
         </Card>
@@ -347,7 +359,7 @@ export function CRM() {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client) => (
+                {filteredClients.map((client) => (
                   <tr 
                     key={client.id} 
                     onClick={() => setSelectedClientId(client.id)}
