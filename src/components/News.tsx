@@ -35,15 +35,23 @@ const CATEGORIES: { id: Category | "all"; label: string; icon: any }[] = [
 export function News() {
   const [sources, setSources] = useState<Source[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
-
-  useEffect(() => {
-    api.news.getSources()
-      .then(data => setSources(data as Source[]))
-      .catch(console.error);
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState<Category | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const loadFeed = () => {
+    setIsLoading(true);
+    Promise.all([api.news.getSources(), api.news.getFeed()])
+      .then(([srcs, feed]) => {
+        setSources(srcs as Source[]);
+        setArticles(feed as Article[]);
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => { loadFeed(); }, []);
 
   // Modals
   const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
@@ -67,57 +75,28 @@ export function News() {
     e.preventDefault();
     if (!newSourceName.trim() || !newSourceUrl.trim()) return;
 
-    const created = await api.news.addSource({
+    await api.news.addSource({
       name: newSourceName.trim(),
       url: newSourceUrl.trim(),
       category: newSourceCategory
     });
-    const newSource = created as Source;
-    setSources([...sources, newSource]);
-
-    // Add a mock article for immediate feedback
-    const mockArticle: Article = {
-      id: `mock-${Date.now()}`,
-      title: `Latest news from ${newSource.name}`,
-      sourceId: newSource.id,
-      sourceName: newSource.name,
-      category: newSource.category,
-      time: "Just now",
-      image: `https://picsum.photos/seed/${newSource.name.replace(/\s+/g, '')}/600/400`,
-      url: newSource.url
-    };
-    setArticles([mockArticle, ...articles]);
     setNewSourceName("");
     setNewSourceUrl("");
+    loadFeed();
   };
 
   const handleDeleteSource = async (id: string) => {
     await api.news.removeSource(id);
     setSources(sources.filter(s => s.id !== id));
+    setArticles(articles.filter(a => a.sourceId !== id));
   };
 
-  const handleLoadMore = () => {
-    if (sources.length === 0) return;
+  const handleRefresh = () => {
     setIsLoadingMore(true);
-    
-    setTimeout(() => {
-      const newArticles: Article[] = Array.from({ length: 6 }).map((_, i) => {
-        const randomSource = sources[Math.floor(Math.random() * sources.length)];
-        return {
-          id: `gen-${Date.now()}-${i}`,
-          title: `Breaking: New developments in ${randomSource.category} sector ${Math.floor(Math.random() * 1000)}`,
-          sourceId: randomSource.id,
-          sourceName: randomSource.name,
-          category: randomSource.category,
-          time: "Just now",
-          image: `https://picsum.photos/seed/${Date.now()}${i}/600/400`,
-          url: randomSource.url
-        };
-      });
-      
-      setArticles(prev => [...prev, ...newArticles]);
-      setIsLoadingMore(false);
-    }, 800);
+    api.news.getFeed()
+      .then(feed => setArticles(feed as Article[]))
+      .catch(console.error)
+      .finally(() => setIsLoadingMore(false));
   };
 
   const getCategoryColor = (cat: Category) => {
@@ -176,7 +155,12 @@ export function News() {
         })}
       </div>
 
-      {filteredArticles.length === 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 text-slate-500 animate-spin" />
+          <span className="ml-3 text-slate-400 font-mono text-sm uppercase tracking-widest">Fetching articles...</span>
+        </div>
+      ) : filteredArticles.length === 0 ? (
         <div className="text-center py-20">
           <Rss className="w-16 h-16 text-slate-600 mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-medium text-white mb-2">No articles found</h3>
@@ -240,15 +224,15 @@ export function News() {
 
       {filteredArticles.length > 0 && (
         <div className="flex justify-center mt-8 pt-4">
-          <Button 
-            onClick={handleLoadMore} 
-            disabled={isLoadingMore || sources.length === 0}
+          <Button
+            onClick={handleRefresh}
+            disabled={isLoadingMore}
             className="bg-white/[0.04] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
           >
             {isLoadingMore ? (
-              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Loading...</>
+              <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Fetching...</>
             ) : (
-              <><Plus className="w-4 h-4 mr-2" /> Load More News</>
+              <><Rss className="w-4 h-4 mr-2" /> Refresh Feed</>
             )}
           </Button>
         </div>

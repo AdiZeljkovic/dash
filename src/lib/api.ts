@@ -105,6 +105,7 @@ export const api = {
   },
   news: {
     getSources: () => get<NewsSource[]>('/news-sources'),
+    getFeed: () => get<any[]>('/news-sources/feed'),
     addSource: (data: Omit<NewsSource, 'id'>) => post<NewsSource>('/news-sources', data),
     removeSource: (id: string) => del(`/news-sources/${id}`),
   },
