@@ -10,6 +10,16 @@ import type { Task, Habit } from "../lib/api";
 import { cn } from "../lib/utils";
 import { CheckSquare, Clock as ClockIcon2 } from "lucide-react";
 
+// Static color map — Tailwind JIT requires full class names, no dynamic strings
+const EVENT_COLORS: Record<string, { chip: string; bar: string; badge: string }> = {
+  emerald: { chip: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20", bar: "bg-emerald-500", badge: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" },
+  blue:    { chip: "bg-blue-500/10 text-blue-400 border-blue-500/20 hover:bg-blue-500/20",             bar: "bg-blue-500",    badge: "bg-blue-500/10 border-blue-500/20 text-blue-400" },
+  purple:  { chip: "bg-purple-500/10 text-purple-400 border-purple-500/20 hover:bg-purple-500/20",     bar: "bg-purple-500",  badge: "bg-purple-500/10 border-purple-500/20 text-purple-400" },
+  orange:  { chip: "bg-orange-500/10 text-orange-400 border-orange-500/20 hover:bg-orange-500/20",     bar: "bg-orange-500",  badge: "bg-orange-500/10 border-orange-500/20 text-orange-400" },
+  pink:    { chip: "bg-pink-500/10 text-pink-400 border-pink-500/20 hover:bg-pink-500/20",             bar: "bg-pink-500",    badge: "bg-pink-500/10 border-pink-500/20 text-pink-400" },
+};
+const getEventColor = (color: string) => EVENT_COLORS[color] ?? EVENT_COLORS.emerald;
+
 type CalendarEvent = {
   id: string;
   title: string;
@@ -135,7 +145,7 @@ export function Calendar() {
               <div
                 key={ev.id}
                 onClick={(e) => handleEventClick(ev, e)}
-                className={`text-[10px] sm:text-xs bg-${ev.color}-500/10 text-${ev.color}-400 p-1.5 rounded-lg border border-${ev.color}-500/20 truncate font-medium hover:bg-${ev.color}-500/20 transition-colors`}
+                className={`text-[10px] sm:text-xs p-1.5 rounded-lg border truncate font-medium transition-colors ${getEventColor(ev.color).chip}`}
               >
                 {ev.time !== "All Day" && <span className="opacity-70 mr-1">{ev.time}</span>}
                 {ev.title}
@@ -265,7 +275,7 @@ export function Calendar() {
                             onClick={() => { setSelectedEvent(ev); setViewState("details"); }}
                             className="p-4 rounded-2xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.04] transition-colors cursor-pointer group flex gap-4"
                           >
-                            <div className={`w-2 h-full rounded-full bg-${ev.color}-500 shrink-0`} />
+                            <div className={`w-2 h-full rounded-full shrink-0 ${getEventColor(ev.color).bar}`} />
                             <div className="flex-1 min-w-0">
                               <h4 className="text-white font-medium truncate group-hover:text-[var(--accent-400)] transition-colors">{ev.title}</h4>
                               <div className="flex items-center gap-2 text-xs text-slate-500 font-mono mt-1">
@@ -301,7 +311,7 @@ export function Calendar() {
                 {viewState === "details" && selectedEvent && (
                   <motion.div key="details" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
                     <div>
-                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-${selectedEvent.color}-500/10 border border-${selectedEvent.color}-500/20 text-${selectedEvent.color}-400 text-xs font-mono tracking-widest uppercase mb-4`}>
+                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono tracking-widest uppercase mb-4 ${getEventColor(selectedEvent.color).badge}`}>
                         Event Details
                       </div>
                       <h2 className="text-3xl font-semibold tracking-tight text-white mb-4">{selectedEvent.title}</h2>

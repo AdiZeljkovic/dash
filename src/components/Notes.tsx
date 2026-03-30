@@ -26,6 +26,18 @@ export function Notes() {
       .finally(() => setIsLoading(false));
   }, []);
 
+  // Refresh when QuickAdd creates a note
+  useEffect(() => {
+    const onRefresh = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (!detail?.type || detail.type === "note") {
+        api.notes.getAll().then(setNotes).catch(console.error);
+      }
+    };
+    window.addEventListener("data:refresh", onRefresh);
+    return () => window.removeEventListener("data:refresh", onRefresh);
+  }, []);
+
   const filteredNotes = notes.filter(note =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     note.content.toLowerCase().includes(searchQuery.toLowerCase()) ||

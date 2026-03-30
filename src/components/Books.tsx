@@ -158,7 +158,7 @@ export function Books() {
                   
                   <div className="absolute inset-0 p-4 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="flex justify-end">
-                      <Button size="icon" variant="ghost" className="h-8 w-8 bg-black/40 backdrop-blur-md text-white hover:bg-white/20 rounded-xl">
+                      <Button size="icon" variant="ghost" onClick={(e) => { e.stopPropagation(); openBookDetails(book); }} className="h-8 w-8 bg-black/40 backdrop-blur-md text-white hover:bg-white/20 rounded-xl">
                         <Edit3 className="w-4 h-4" />
                       </Button>
                     </div>
