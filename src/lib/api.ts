@@ -111,6 +111,7 @@ export const api = {
   },
   youtube: {
     getChannels: () => get<YTChannel[]>('/youtube-channels'),
+    getFeed: () => get<any[]>('/youtube-channels/feed'),
     addChannel: (data: Omit<YTChannel, 'id'>) => post<YTChannel>('/youtube-channels', data),
     removeChannel: (id: string) => del(`/youtube-channels/${id}`),
   },

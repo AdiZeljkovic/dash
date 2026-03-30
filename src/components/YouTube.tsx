@@ -22,12 +22,19 @@ type Video = {
 export function YouTube() {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    api.youtube.getChannels().then(setChannels).catch(console.error);
-  }, []);
+  const loadFeed = () => {
+    setIsLoading(true);
+    Promise.all([api.youtube.getChannels(), api.youtube.getFeed()])
+      .then(([chs, feed]) => { setChannels(chs as Channel[]); setVideos(feed as Video[]); })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => { loadFeed(); }, []);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Modals
   const [isChannelModalOpen, setIsChannelModalOpen] = useState(false);
@@ -49,56 +56,19 @@ export function YouTube() {
     e.preventDefault();
     if (!newChannelName.trim() || !newChannelUrl.trim()) return;
 
-    const created = await api.youtube.addChannel({
-      name: newChannelName.trim(),
-      url: newChannelUrl.trim(),
-    });
-    setChannels([...channels, created]);
-
-    // Add a mock video for immediate feedback
-    const mockVideo: Video = {
-      id: `mock-${Date.now()}`,
-      title: `Latest video from ${created.name}`,
-      channelId: created.id,
-      channelName: created.name,
-      time: "Just now",
-      thumbnail: `https://picsum.photos/seed/${created.name.replace(/\s+/g, '')}/600/400`,
-      url: created.url,
-      duration: "10:00"
-    };
-    setVideos([mockVideo, ...videos]);
+    await api.youtube.addChannel({ name: newChannelName.trim(), url: newChannelUrl.trim() });
     setNewChannelName("");
     setNewChannelUrl("");
+    loadFeed();
   };
 
   const handleDeleteChannel = async (id: string) => {
     await api.youtube.removeChannel(id);
     setChannels(channels.filter(c => c.id !== id));
+    setVideos(videos.filter(v => v.channelId !== id));
   };
 
-  const handleLoadMore = () => {
-    if (channels.length === 0) return;
-    setIsLoadingMore(true);
-    
-    setTimeout(() => {
-      const newVideos: Video[] = Array.from({ length: 6 }).map((_, i) => {
-        const randomChannel = channels[Math.floor(Math.random() * channels.length)];
-        return {
-          id: `gen-${Date.now()}-${i}`,
-          title: `New upload from ${randomChannel.name} #${Math.floor(Math.random() * 100)}`,
-          channelId: randomChannel.id,
-          channelName: randomChannel.name,
-          time: "Just now",
-          thumbnail: `https://picsum.photos/seed/${Date.now()}${i}/600/400`,
-          url: randomChannel.url,
-          duration: `${Math.floor(Math.random() * 20) + 1}:${Math.floor(Math.random() * 50) + 10}`
-        };
-      });
-      
-      setVideos(prev => [...prev, ...newVideos]);
-      setIsLoadingMore(false);
-    }, 800);
-  };
+  const handleRefresh = () => loadFeed();
 
   return (
     <motion.div 
@@ -127,7 +97,12 @@ export function YouTube() {
         </div>
       </header>
 
-      {filteredVideos.length === 0 ? (
+      {isLoading ? (
+        <div className="text-center py-20">
+          <Loader2 className="w-10 h-10 text-slate-500 mx-auto animate-spin" />
+          <p className="text-slate-400 mt-4 font-light">Loading videos...</p>
+        </div>
+      ) : filteredVideos.length === 0 ? (
         <div className="text-center py-20">
           <Youtube className="w-16 h-16 text-slate-600 mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-medium text-white mb-2">No videos found</h3>
@@ -210,15 +185,15 @@ export function YouTube() {
 
       {filteredVideos.length > 0 && (
         <div className="flex justify-center mt-8 pt-4">
-          <Button 
-            onClick={handleLoadMore} 
-            disabled={isLoadingMore || channels.length === 0}
+          <Button
+            onClick={handleRefresh}
+            disabled={isLoading}
             className="bg-white/[0.04] text-white hover:bg-white/[0.05] border border-white/[0.1] px-8 py-6 rounded-full font-mono uppercase tracking-widest text-xs transition-all duration-300"
           >
-            {isLoadingMore ? (
+            {isLoading ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Loading...</>
             ) : (
-              <><Plus className="w-4 h-4 mr-2" /> Load More Videos</>
+              <><Plus className="w-4 h-4 mr-2" /> Refresh Feed</>
             )}
           </Button>
         </div>
